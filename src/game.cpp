@@ -66,6 +66,11 @@ void Game::handleEvents()
         case SDL_QUIT:
             isRunning = false;
             break;
+        
+        case SDL_KEYDOWN:
+            player->updatePos(event);
+            break;
+        
         default:
             break;
     }
