@@ -50,37 +50,47 @@ void GameObject::update()
 
 void GameObject::updatePos(SDL_Event event, int map[20][25])
 {
+    int hop;
+    if(map[(ypos/30)][(xpos/30)] == 0)
+    {
+        hop = globals::WATER_SPEED;
+    }
+    else if(map[(ypos/30)][(xpos/30)] == 1)
+    {
+        hop = globals::GRASS_SPEED;
+    }
+
     switch(event.key.keysym.sym)
         {
             case SDLK_w:
             case SDLK_UP:
-                if (!checkCollision(xpos,ypos-5-destRect.h, map))
+                if (!checkCollision(xpos,ypos-hop-destRect.h, map))
                 {
-                    ypos -= 5;
+                    ypos -= hop;
                     facing = 0;
                 }
                 break;
             case SDLK_s:
             case SDLK_DOWN:
-                if (!checkCollision(xpos,ypos+5+destRect.h, map))
+                if (!checkCollision(xpos,ypos+hop+destRect.h, map))
                 {
-                    ypos += 5;
+                    ypos += hop;
                     facing = 2;
                 }
                 break;
             case SDLK_a:
             case SDLK_LEFT:
-                if(!checkCollision(xpos-5-destRect.w,ypos, map))
+                if(!checkCollision(xpos-hop-destRect.w,ypos, map))
                 {
-                    xpos -= 5;
+                    xpos -= hop;
                     facing = 3;
                 }
                 break;
             case SDLK_d:
             case SDLK_RIGHT:
-                if(!checkCollision(xpos+5+destRect.w,ypos, map))
+                if(!checkCollision(xpos+hop+destRect.w,ypos, map))
                 {
-                    xpos += 5;
+                    xpos += hop;
                     facing = 1;
                 }
                 break;

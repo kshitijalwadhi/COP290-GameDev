@@ -8,7 +8,7 @@ namespace globals {
 	const float SPRITE_SCALE = 2.0f;
 
 	const int GRASS_SPEED = 5;
-	const int WATER_SPEED = 3;
+	const int WATER_SPEED = 2;
 }
 
 #endif
