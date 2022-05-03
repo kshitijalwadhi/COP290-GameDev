@@ -2,23 +2,44 @@
 #include "TextureManager.h"
 #include "globals.h"
 
+const int WALKING_ANIMATION_FRAMES = 6;
+SDL_Rect spriteRects_L[WALKING_ANIMATION_FRAMES];
+SDL_Rect spriteRects_R[WALKING_ANIMATION_FRAMES];
+
 GameObject::GameObject(const char* textureSheet, int x, int y)
 {
     objTexture = TextureManager::loadTexture(textureSheet);
 
     xpos = x;
     ypos = y;
+
+    frames = 0;
+
+    spriteRects_L[0] = {0, 0, 16, 16};
+    spriteRects_L[1] = {16, 0, 16, 16};
+    spriteRects_L[2] = {32, 0, 16, 16};
+    spriteRects_L[3] = {48, 0, 16, 16};
+    spriteRects_L[4] = {64, 0, 16, 16};
+    spriteRects_L[5] = {80, 0, 16, 16};
+
+    spriteRects_R[0] = {0, 16, 16, 16};
+    spriteRects_R[1] = {16, 16, 16, 16};
+    spriteRects_R[2] = {32, 16, 16, 16};
+    spriteRects_R[3] = {48, 16, 16, 16};
+    spriteRects_R[4] = {64, 16, 16, 16};
+    spriteRects_R[5] = {80, 16, 16, 16};
 }
 
 void GameObject::update()
 {
-    srcRect.h = 16;
-    srcRect.w = 16;
+    int idx = frames % 6;
     if(facing == 3 || facing == 2)
-        srcRect.x = srcRect.y = 0;
+    {
+        srcRect = spriteRects_L[idx];
+    }
     else
-    {    srcRect.x = 0;
-        srcRect.y = 16;
+    {   
+        srcRect = spriteRects_R[idx];
     }
 
     destRect.x = xpos;
@@ -52,14 +73,15 @@ void GameObject::updatePos(SDL_Event event)
                 facing = 1;
                 break;
         }
-        if(xpos <0)
-            xpos = 0;
-        if(ypos <0)
-            ypos = 0;
-        if(xpos > globals::SCREEN_WIDTH - destRect.w)
-            xpos = globals::SCREEN_WIDTH - destRect.w;
-        if(ypos > globals::SCREEN_HEIGHT - destRect.h)
-            ypos = globals::SCREEN_HEIGHT - destRect.h;
+    frames++;
+    if(xpos <0)
+        xpos = 0;
+    if(ypos <0)
+        ypos = 0;
+    if(xpos > globals::SCREEN_WIDTH - destRect.w)
+        xpos = globals::SCREEN_WIDTH - destRect.w;
+    if(ypos > globals::SCREEN_HEIGHT - destRect.h)
+        ypos = globals::SCREEN_HEIGHT - destRect.h;
 }
 
 void GameObject::render()
