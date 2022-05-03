@@ -4,6 +4,8 @@
 
 GameObject* player;
 
+SDL_Renderer* Game::renderer = nullptr;
+
 Game::Game()
 {
     isRunning = false;
@@ -43,7 +45,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
         isRunning = true;
 
-        player = new GameObject("../assets/sprites/MyChar.png", renderer, 100, 100);
+        player = new GameObject("../assets/sprites/MyChar.png", 100, 100);
     }
     else{
         isRunning = false;

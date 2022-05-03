@@ -1,6 +1,6 @@
 #include "TextureManager.h"
 
-SDL_Texture* TextureManager::loadTexture(const char* fname, SDL_Renderer* renderer)
+SDL_Texture* TextureManager::loadTexture(const char* fname)
 {
     SDL_Surface* tempSur = IMG_Load(fname);
     if(tempSur == NULL)
@@ -8,7 +8,7 @@ SDL_Texture* TextureManager::loadTexture(const char* fname, SDL_Renderer* render
         printf("Unable to load image!");
         return NULL;
     }
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, tempSur);
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, tempSur);
     SDL_FreeSurface(tempSur);
     return tex;
 }
