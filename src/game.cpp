@@ -1,4 +1,7 @@
 #include "game.h"
+#include "TextureManager.h"
+
+SDL_Texture* playerTexture;
 
 Game::Game()
 {
@@ -38,6 +41,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         }
 
         isRunning = true;
+
+        // load textures
+        playerTexture = TextureManager::loadTexture("../assets/sprites/MyChar.png", renderer);
     }
     else{
         isRunning = false;
@@ -69,6 +75,7 @@ void Game::render()
 {
     SDL_RenderClear(renderer);
     // rendering done here
+    SDL_RenderCopy(renderer, playerTexture, NULL, NULL);
     SDL_RenderPresent(renderer);
 }
 
