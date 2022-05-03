@@ -9,7 +9,7 @@ class GameObject{
         void render();
         void update();
 
-        void updatePos(SDL_Event event);
+        void updatePos(SDL_Event event, int map[20][25]);
 
     private:
         int xpos, ypos;
@@ -17,4 +17,7 @@ class GameObject{
         int frames;
         SDL_Texture* objTexture;
         SDL_Rect srcRect, destRect;       
+
+        bool checkCollision(int x, int y, int map[20][25]);
+
 };

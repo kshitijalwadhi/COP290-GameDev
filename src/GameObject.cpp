@@ -48,29 +48,41 @@ void GameObject::update()
     destRect.h = srcRect.h*globals::SPRITE_SCALE;
 }
 
-void GameObject::updatePos(SDL_Event event)
+void GameObject::updatePos(SDL_Event event, int map[20][25])
 {
     switch(event.key.keysym.sym)
         {
             case SDLK_w:
             case SDLK_UP:
-                ypos -= 5;
-                facing = 0;
+                if (!checkCollision(xpos,ypos-5-destRect.h, map))
+                {
+                    ypos -= 5;
+                    facing = 0;
+                }
                 break;
             case SDLK_s:
             case SDLK_DOWN:
-                ypos += 5;
-                facing = 2;
+                if (!checkCollision(xpos,ypos+5+destRect.h, map))
+                {
+                    ypos += 5;
+                    facing = 2;
+                }
                 break;
             case SDLK_a:
             case SDLK_LEFT:
-                xpos -= 5;
-                facing = 3;
+                if(!checkCollision(xpos-5-destRect.w,ypos, map))
+                {
+                    xpos -= 5;
+                    facing = 3;
+                }
                 break;
             case SDLK_d:
             case SDLK_RIGHT:
-                xpos += 5;
-                facing = 1;
+                if(!checkCollision(xpos+5+destRect.w,ypos, map))
+                {
+                    xpos += 5;
+                    facing = 1;
+                }
                 break;
         }
     frames++;
@@ -87,4 +99,13 @@ void GameObject::updatePos(SDL_Event event)
 void GameObject::render()
 {
     SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+}
+
+bool GameObject::checkCollision(int x, int y, int map[20][25])
+{
+    int tempy = y/30;
+    int tempx = x/30;
+    if(map[tempy][tempx] == 2)
+        return true;
+    return false;
 }

@@ -68,7 +68,7 @@ void Game::handleEvents()
             break;
         
         case SDL_KEYDOWN:
-            player->updatePos(event);
+            player->updatePos(event, map->map);
             break;
         
         default:
