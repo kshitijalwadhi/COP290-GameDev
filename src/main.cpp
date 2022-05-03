@@ -19,9 +19,17 @@ int main(int argc, char* argv[]) {
     {
         frameStart = SDL_GetTicks();
 
-        game->handleEvents();
-        game->update();
-        game->render();
+        if(!game->onMenu())
+        {
+            game->handleEvents();
+            game->update();
+            game->render();
+        }
+        else{
+            game->handleMenuEvents();
+            game->updateMenu();
+            game->renderMenu();
+        }
 
         frameTime = SDL_GetTicks() - frameStart;
 

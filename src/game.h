@@ -17,12 +17,17 @@ class Game{
         void render();
         void clean();
 
-        bool running() { return isRunning; }
+        void handleMenuEvents();
+        void updateMenu();
+        void renderMenu();
 
+        bool running() { return isRunning; }
+        bool onMenu() {return isMenuScreen;}
         static SDL_Renderer* renderer;
 
     private:
         bool isRunning;
+        bool isMenuScreen;
         SDL_Window* window;
 };
 
