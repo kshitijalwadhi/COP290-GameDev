@@ -1,7 +1,8 @@
 #include "game.h"
 #include "TextureManager.h"
+#include "GameObject.h"
 
-SDL_Texture* playerTexture;
+GameObject* player;
 
 Game::Game()
 {
@@ -42,8 +43,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
         isRunning = true;
 
-        // load textures
-        playerTexture = TextureManager::loadTexture("../assets/sprites/MyChar.png", renderer);
+        player = new GameObject("../assets/sprites/MyChar.png", renderer, 100, 100);
     }
     else{
         isRunning = false;
@@ -68,6 +68,7 @@ void Game::handleEvents()
 void Game::update()
 {
     // handle game logic here
+    player->update();
 
 }
 
@@ -75,7 +76,7 @@ void Game::render()
 {
     SDL_RenderClear(renderer);
     // rendering done here
-    SDL_RenderCopy(renderer, playerTexture, NULL, NULL);
+    player->render();
     SDL_RenderPresent(renderer);
 }
 
