@@ -1,8 +1,11 @@
 #include "game.h"
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "Map.h"
 
 GameObject* player;
+
+Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;
 
@@ -46,6 +49,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         isRunning = true;
 
         player = new GameObject("../assets/sprites/MyChar.png", 100, 100);
+        map = new Map();
     }
     else{
         isRunning = false;
@@ -72,12 +76,14 @@ void Game::update()
     // handle game logic here
     player->update();
 
+    // add code to load map from .txt file from here
 }
 
 void Game::render()
 {
     SDL_RenderClear(renderer);
     // rendering done here
+    map->drawMap();
     player->render();
     SDL_RenderPresent(renderer);
 }
