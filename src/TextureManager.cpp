@@ -32,3 +32,8 @@ SDL_Texture* TextureManager::loadTextureFromText(const char* text, const char* f
     SDL_FreeSurface(surf);
     return tex;
 }
+
+void TextureManager::drawText(SDL_Texture* text, SDL_Rect dest)
+{
+    SDL_RenderCopy(Game::renderer, text, NULL, &dest);
+}
