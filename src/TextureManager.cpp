@@ -18,10 +18,14 @@ void TextureManager::draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest)
     SDL_RenderCopy(Game::renderer, tex, &src, &dest);
 }
 
-SDL_Texture* TextureManager::loadTextureFromText(const char* text, const char* fontFile, int size)
+void TextureManager::drawBG(SDL_Texture* tex)
+{
+    SDL_RenderCopy(Game::renderer, tex, NULL, NULL);
+}
+
+SDL_Texture* TextureManager::loadTextureFromText(const char* text, const char* fontFile, int size, SDL_Color color)
 {
     TTF_Font* font = TTF_OpenFont(fontFile, size);
-    SDL_Color color = {0, 0, 0};
     SDL_Surface* surf = TTF_RenderText_Solid(font, text, color);
     if(surf == NULL)
     {

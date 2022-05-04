@@ -121,6 +121,8 @@ void Game::handleMenuEvents()
             int button_idx = menu->handleClick(event);
             if(button_idx==1)
                 {isMenuScreen = false;}
+            else if(button_idx==2)
+                {isRunning = false;}
             break;
         }
         default:

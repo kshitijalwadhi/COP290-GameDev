@@ -3,20 +3,31 @@
 
 const char* fontName_MenuScreenButtons = "../assets/fonts/Raleway-ExtraBold.ttf";
 const int fontSize_MenuScreenButtons = 32;
+SDL_Color buttonTextColor = {255, 255, 255};
 
 Menu::Menu()
 {
     dstRect_Play.x = globals::SCREEN_WIDTH/2 - 50;
-    dstRect_Play.y = globals::SCREEN_HEIGHT/2 - 50;
+    dstRect_Play.y = globals::SCREEN_HEIGHT/2 - 200;
     dstRect_Play.w = 100;
     dstRect_Play.h = 100;
+
+    dstRect_Exit.x = globals::SCREEN_WIDTH/2 - 50;
+    dstRect_Exit.y = globals::SCREEN_HEIGHT/2 - 50;
+    dstRect_Exit.w = 100;
+    dstRect_Exit.h = 100;
 }
 
 void Menu::render()
 {
-    SDL_Texture* button1_texture = TextureManager::loadTextureFromText("Click here",fontName_MenuScreenButtons,fontSize_MenuScreenButtons);
+    bg_tex = TextureManager::loadTexture("../assets/bg_images/menu.png");
+    TextureManager::drawBG(bg_tex);
 
+    SDL_Texture* button1_texture = TextureManager::loadTextureFromText("Play",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
     TextureManager::drawText(button1_texture,dstRect_Play);
+
+    SDL_Texture* button2_texture = TextureManager::loadTextureFromText("Exit",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
+    TextureManager::drawText(button2_texture,dstRect_Exit);
 }
 
 void Menu::update()
@@ -24,14 +35,27 @@ void Menu::update()
 
 }
 
+bool checkInside(int x, int y, SDL_Rect rect)
+{
+    if(x > rect.x && x < rect.x + rect.w && y > rect.y && y < rect.y + rect.h)
+    {
+        return true;
+    }
+    return false;
+}
+
 int Menu::handleClick(SDL_Event event)
 {
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-    if(x > dstRect_Play.x && x < dstRect_Play.x + dstRect_Play.w && y > dstRect_Play.y && y < dstRect_Play.y + dstRect_Play.h)
+    if(checkInside(x, y, dstRect_Play))
     {
         return 1;
+    }
+    else if(checkInside(x, y, dstRect_Exit))
+    {
+        return 2;
     }
 
     return 0;

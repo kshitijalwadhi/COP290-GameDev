@@ -12,6 +12,9 @@ class Menu{
 
         int handleClick(SDL_Event event);
     private:
+        SDL_Texture* bg_tex;
+
         SDL_Rect dstRect_Play;
+        SDL_Rect dstRect_Exit;
         
 };
