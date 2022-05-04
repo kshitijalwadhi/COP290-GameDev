@@ -60,6 +60,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
         player = new GameObject("../assets/sprites/MyChar.png", 100, 100);
         map = new Map();
+
+        menu = new Menu();
     }
     else{
         isRunning = false;
@@ -115,13 +117,18 @@ void Game::handleMenuEvents()
             break;
         
         case SDL_MOUSEBUTTONDOWN:
-            isMenuScreen = false;
+        {  
+            int button_idx = menu->handleClick(event);
+            if(button_idx==1)
+                {isMenuScreen = false;}
             break;
-
+        }
         default:
             break;
     }
 }
+
+
 
 void Game::updateMenu()
 {
