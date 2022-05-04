@@ -6,12 +6,44 @@ const int WALKING_ANIMATION_FRAMES = 6;
 SDL_Rect spriteRects_L[WALKING_ANIMATION_FRAMES];
 SDL_Rect spriteRects_R[WALKING_ANIMATION_FRAMES];
 
-GameObject::GameObject(const char* textureSheet, int x, int y)
+SDL_Color bgColorBar = {0, 0, 0};
+SDL_Color energyBarColor = {255, 0, 0};
+SDL_Color socialQuotientBarColor = {0, 255, 0};
+SDL_Color fitnessBarColor = {0, 0, 255};
+SDL_Color nerdinessBarColor = {255, 255, 0};
+
+GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx)
 {
+    player_idx = player_idx;
+
     objTexture = TextureManager::loadTexture(textureSheet);
+
+    if(player_idx==1)
+    {
+        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = 0;
+    }
+    else{
+        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = globals::SCREEN_WIDTH - 100;
+    }
+    dstRect_Energy.y = 0;
+    dstRect_Fitness.y = 10;
+    dstRect_Nerdiness.y = 20;
+    dstRect_SocialQuotient.y = 30;
+    dstRect_Energy.w = dstRect_Fitness.w = dstRect_Nerdiness.w = dstRect_SocialQuotient.w = 100;
+    dstRect_Energy.h = dstRect_Fitness.h = dstRect_Nerdiness.h = dstRect_SocialQuotient.h = 10;
 
     xpos = x;
     ypos = y;
+
+    energy = 50;
+    socialQuotient = 10;
+    fitness = 50;
+    nerdiness = 30;
+
+    energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
+    socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
+    fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
+    nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
 
     frames = 0;
 
@@ -46,6 +78,11 @@ void GameObject::update()
     destRect.y = ypos;
     destRect.w = srcRect.w*globals::SPRITE_SCALE;
     destRect.h = srcRect.h*globals::SPRITE_SCALE;
+
+    energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
+    socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
+    fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
+    nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
 }
 
 void GameObject::updatePos(SDL_Event event, int map[20][25])
@@ -109,6 +146,10 @@ void GameObject::updatePos(SDL_Event event, int map[20][25])
 void GameObject::render()
 {
     SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+    TextureManager::drawProgressBar(energyTex, dstRect_Energy);
+    TextureManager::drawProgressBar(socialQuotientTex, dstRect_SocialQuotient);
+    TextureManager::drawProgressBar(fitnessTex, dstRect_Fitness);
+    TextureManager::drawProgressBar(nerdinessTex, dstRect_Nerdiness);
 }
 
 bool GameObject::checkCollision(int x, int y, int map[20][25])

@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include "TextureManager.h"
 
-const char* fontName_MenuScreenButtons = "../assets/fonts/Raleway-ExtraBold.ttf";
+const char* fontName_MenuScreenButtons = "../assets/fonts/03314_BaarZeitgeist.ttf";
 const int fontSize_MenuScreenButtons = 32;
 SDL_Color buttonTextColor = {255, 255, 255};
 

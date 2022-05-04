@@ -4,7 +4,8 @@
 #include "Map.h"
 #include "Menu.h"
 
-GameObject* player;
+GameObject* player1;
+GameObject* player2;
 
 Map* map;
 
@@ -80,7 +81,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         isRunning = true;
         isMenuScreen = true;
 
-        player = new GameObject("../assets/sprites/MyChar.png", 100, 100);
+        player1 = new GameObject("../assets/sprites/MyChar.png", 100, 100, 1);
+        player2 = new GameObject("../assets/sprites/MyChar.png", 200, 200, 2);
         map = new Map();
 
         menu = new Menu();
@@ -102,7 +104,8 @@ void Game::handleEvents()
             break;
         
         case SDL_KEYDOWN:
-            player->updatePos(event, map->map);
+            player1->updatePos(event, map->map);
+            player2->updatePos(event, map->map);
             break;
         
         default:
@@ -113,7 +116,8 @@ void Game::handleEvents()
 void Game::update()
 {
     // handle game logic here
-    player->update();
+    player1->update();
+    player2->update();
 
     // add code to load map from .txt file from here
 }
@@ -123,7 +127,8 @@ void Game::render()
     SDL_RenderClear(renderer);
     // rendering done here
     map->drawMap();
-    player->render();
+    player1->render();
+    player2->render();
     SDL_RenderPresent(renderer);
 }
 
