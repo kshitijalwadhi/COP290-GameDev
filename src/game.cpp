@@ -12,6 +12,8 @@ Menu* menu;
 
 SDL_Renderer* Game::renderer = nullptr;
 
+Mix_Music *gMenuMusic = NULL;
+
 Game::Game()
 {
     isRunning = false;
@@ -54,6 +56,22 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
             printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
             return;
         }
+
+        if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+        {
+            printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+            return;
+        }
+
+        gMenuMusic = Mix_LoadMUS("../assets/audio/menu.wav");
+
+        if(gMenuMusic == NULL)
+        {
+            printf("Failed to load menu music! SDL_mixer Error: %s\n", Mix_GetError());
+            return;
+        }
+        bgMusicPlaying = true;
+        Mix_PlayMusic(gMenuMusic, -1);
 
         isRunning = true;
         isMenuScreen = true;
@@ -119,11 +137,31 @@ void Game::handleMenuEvents()
         case SDL_MOUSEBUTTONDOWN:
         {  
             int button_idx = menu->handleClick(event);
-            if(button_idx==1)
-                {isMenuScreen = false;}
-            else if(button_idx==2)
-                {isRunning = false;}
-            break;
+            switch (button_idx)
+            {
+                case 1:
+                    isMenuScreen = false;
+                    break;
+                case 2:
+                    isRunning = false;
+                    break;
+                case 3:
+                    {
+                        if(bgMusicPlaying)
+                        {
+                            Mix_PauseMusic();
+                            bgMusicPlaying = false;
+                        }
+                        else
+                        {
+                            Mix_ResumeMusic();
+                            bgMusicPlaying = true;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
         default:
             break;
@@ -148,6 +186,10 @@ void Game::renderMenu()
 
 void Game::clean()
 {
+    Mix_FreeMusic( gMenuMusic );
+    gMenuMusic = NULL;
+    Mix_Quit();
+    IMG_Quit();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
