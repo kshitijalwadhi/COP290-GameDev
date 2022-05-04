@@ -8,7 +8,10 @@ Menu::Menu()
 
 void Menu::render()
 {
-    //SDL_RenderCopy(Game::renderer, dirt, &src, &dest);
+    const char* fontName = "../assets/fonts/Raleway-ExtraBold.ttf";
+    int fontSize = 32;
+    SDL_Texture* button1_texture = TextureManager::loadTextureFromText("Click here",fontName,32);
+    SDL_RenderCopy(Game::renderer, button1_texture, NULL, NULL);
 }
 
 void Menu::update()
