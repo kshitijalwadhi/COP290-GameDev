@@ -16,5 +16,7 @@ class Menu{
 
         SDL_Rect dstRect_Play;
         SDL_Rect dstRect_Exit;
+
+        SDL_Rect dstRect_Music;
         
 };
