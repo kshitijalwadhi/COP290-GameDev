@@ -34,6 +34,7 @@ SDL_Texture* TextureManager::loadTextureFromText(const char* text, const char* f
     }
     SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, surf);
     SDL_FreeSurface(surf);
+    TTF_CloseFont(font);
     return tex;
 }
 

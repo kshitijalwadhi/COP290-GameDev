@@ -57,13 +57,17 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
             return;
         }
 
-        if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+        int flags = MIX_INIT_MP3;
+        
+        Mix_Init(flags);
+
+        if( Mix_OpenAudio( 22050, AUDIO_S16SYS, 2, 640 ) < 0 )
         {
             printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
             return;
         }
 
-        gMenuMusic = Mix_LoadMUS("../assets/audio/menu.wav");
+        gMenuMusic = Mix_LoadMUS("../assets/audio/menu.mp3");
 
         if(gMenuMusic == NULL)
         {
@@ -71,7 +75,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
             return;
         }
         bgMusicPlaying = true;
-        Mix_PlayMusic(gMenuMusic, -1);
+        Mix_PlayMusic(gMenuMusic, 1);
 
         isRunning = true;
         isMenuScreen = true;
@@ -190,6 +194,7 @@ void Game::clean()
     gMenuMusic = NULL;
     Mix_Quit();
     IMG_Quit();
+    TTF_Quit();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();

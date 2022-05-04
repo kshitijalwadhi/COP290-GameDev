@@ -28,15 +28,19 @@ void Menu::render()
 {
     bg_tex = TextureManager::loadTexture("../assets/bg_images/menu.png");
     TextureManager::drawBG(bg_tex);
+    SDL_DestroyTexture(bg_tex);
 
     SDL_Texture* button1_texture = TextureManager::loadTextureFromText("Play",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
     TextureManager::drawText(button1_texture,dstRect_Play);
+    SDL_DestroyTexture(button1_texture);
 
     SDL_Texture* button2_texture = TextureManager::loadTextureFromText("Exit",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
     TextureManager::drawText(button2_texture,dstRect_Exit);
+    SDL_DestroyTexture(button2_texture);
 
     SDL_Texture* button3_texture = TextureManager::loadTextureFromText("Toggle Music",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
     TextureManager::drawText(button3_texture,dstRect_Music);
+    SDL_DestroyTexture(button3_texture);
 }
 
 void Menu::update()
