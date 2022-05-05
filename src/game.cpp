@@ -95,6 +95,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::handleEvents()
 {
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
     SDL_Event event;
     SDL_PollEvent(&event);
 
@@ -105,7 +106,7 @@ void Game::handleEvents()
             break;
         
         case SDL_KEYDOWN:
-            player1->updatePos(event, map->map_mat);
+            player1->updatePos(event, state, map->map_mat);
             //player2->updatePos(event, map->map_mat);
             break;
         

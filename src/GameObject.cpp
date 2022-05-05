@@ -128,14 +128,14 @@ int returnSpeed(int loc)
     return speed;
 }
 
-void GameObject::updatePos(SDL_Event event, int map[40][80])
+void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
 {
     int tempy = (ypos+8)/16;
     int tempx = (xpos+0.5)/16;
     int loc = map[tempy][tempx];
     int hop = returnSpeed(loc);
 
-    if(event.key.keysym.sym == SDLK_LSHIFT)
+    if(state[SDL_SCANCODE_LSHIFT])
         hop = 1;
     switch(event.key.keysym.sym)
         {
