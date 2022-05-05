@@ -9,7 +9,7 @@ class GameObject{
         void render();
         void update();
 
-        void updatePos(SDL_Event event, int map[20][25]);
+        void updatePos(SDL_Event event, int map[40][80]);
 
     private:
         int player_idx;
@@ -28,6 +28,6 @@ class GameObject{
         SDL_Texture* energyTex, *socialQuotientTex, *fitnessTex, *nerdinessTex;
         SDL_Rect dstRect_Energy, dstRect_SocialQuotient, dstRect_Fitness, dstRect_Nerdiness;     
 
-        bool checkCollision(int x, int y, int map[20][25]);
+        bool checkCollision(int x, int y, int map[40][80]);
 
 };

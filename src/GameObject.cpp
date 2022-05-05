@@ -85,7 +85,7 @@ void GameObject::update()
     nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
 }
 
-void GameObject::updatePos(SDL_Event event, int map[20][25])
+void GameObject::updatePos(SDL_Event event, int map[40][80])
 {
     int hop;
     if(map[(ypos/30)][(xpos/30)] == 0)
@@ -152,7 +152,7 @@ void GameObject::render()
     TextureManager::drawProgressBar(nerdinessTex, dstRect_Nerdiness);
 }
 
-bool GameObject::checkCollision(int x, int y, int map[20][25])
+bool GameObject::checkCollision(int x, int y, int map[40][80])
 {
     int tempy = y/30;
     int tempx = x/30;

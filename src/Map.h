@@ -1,4 +1,5 @@
 #include "game.h"
+#include <vector>
 
 class Map{
     public:
@@ -6,10 +7,10 @@ class Map{
         Map();
         ~Map();
 
-        void loadMap(int arr[20][25]);
+        void loadMap(const char* fname);
         void drawMap();
 
-        int map[20][25];
+        int map[40][80];
 
     private:
 
