@@ -110,16 +110,28 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
     //     hop = globals::GRASS_SPEED;
     // }
 
-    hop = 3;
+    hop = 1;
 
     switch(event.key.keysym.sym)
         {
             case SDLK_w:
             case SDLK_UP:
-                if (!checkCollision(xpos,ypos-hop-destRect.h, map))
+                if (!checkCollision(xpos,ypos-hop, map))
                 {
                     ypos -= hop;
                     facing = 0;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if (!checkCollision(xpos,ypos-temp_hop, map))
+                        {
+                            ypos -= temp_hop;
+                            facing = 0;
+                        }
+                        temp_hop--;
+                    }
                 }
                 break;
             case SDLK_s:
@@ -129,13 +141,37 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
                     ypos += hop;
                     facing = 2;
                 }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if (!checkCollision(xpos,ypos+temp_hop+destRect.h, map))
+                        {
+                            ypos += temp_hop;
+                            facing = 2;
+                        }
+                        temp_hop--;
+                    }
+                }
                 break;
             case SDLK_a:
             case SDLK_LEFT:
-                if(!checkCollision(xpos-hop-destRect.w,ypos, map))
+                if(!checkCollision(xpos-hop,ypos, map))
                 {
                     xpos -= hop;
                     facing = 3;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if(!checkCollision(xpos-temp_hop,ypos, map))
+                        {
+                            xpos -= temp_hop;
+                            facing = 3;
+                        }
+                        temp_hop--;
+                    }
                 }
                 break;
             case SDLK_d:
@@ -144,6 +180,18 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
                 {
                     xpos += hop;
                     facing = 1;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if(!checkCollision(xpos+temp_hop+destRect.w,ypos, map))
+                        {
+                            xpos += temp_hop;
+                            facing = 1;
+                        }
+                        temp_hop--;
+                    }
                 }
                 break;
         }
@@ -170,10 +218,25 @@ void GameObject::render()
 bool GameObject::checkCollision(int x, int y, int map[40][80])
 {
     // adding temporarily:
-    return false;
-    int tempy = y/30;
-    int tempx = x/30;
-    if(map[tempy][tempx] == 2)
-        return true;
-    return false;
+    int tempy = y/16;
+    int tempx = x/16;
+    int loc = map[tempy][tempx];
+    bool collision = true;
+    for(int i=0; i<globals::ROAD_IDX.size();i++)
+    {
+        if(loc == globals::ROAD_IDX[i])
+        {
+            collision = false;
+            break;
+        }
+    }
+    for(int i=0; i<globals::GRASS_IDX.size();i++)
+    {
+        if(loc == globals::GRASS_IDX[i])
+        {
+            collision = false;
+            break;
+        }
+    }
+    return collision;
 }
