@@ -5,7 +5,7 @@ const int WALKING_ANIMATION_FRAMES = 3;
 class GameObject{
 
     public:
-        GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type);
+        GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime);
         ~GameObject();
 
         void render();
@@ -20,11 +20,12 @@ class GameObject{
         int character_type;
         int facing; // 0: up, 1: right, 2: down, 3: left
         int frames;
+        Uint32 startTime;
 
-        int energy;
-        int socialQuotient;
-        int fitness;
-        int nerdiness;
+        float energy;
+        float socialQuotient;
+        float fitness;
+        float nerdiness;
 
         SDL_Rect spriteRects_L[WALKING_ANIMATION_FRAMES];
         SDL_Rect spriteRects_R[WALKING_ANIMATION_FRAMES];

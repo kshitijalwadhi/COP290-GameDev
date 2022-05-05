@@ -43,7 +43,7 @@ void TextureManager::drawText(SDL_Texture* text, SDL_Rect dest)
     SDL_RenderCopy(Game::renderer, text, NULL, &dest);
 }
 
-SDL_Texture* TextureManager::progressBar(int progress, int maxProgress, SDL_Color bg_color, SDL_Color fg_color)
+SDL_Texture* TextureManager::progressBar(float progress, int maxProgress, SDL_Color bg_color, SDL_Color fg_color)
 {
     SDL_Rect bg_rect;
     bg_rect.x = progress;
@@ -57,7 +57,7 @@ SDL_Texture* TextureManager::progressBar(int progress, int maxProgress, SDL_Colo
     fg_rect.w = progress;
     fg_rect.h = 10;
 
-    SDL_Texture* tex = SDL_CreateTexture(Game::renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, bg_rect.w, bg_rect.h);
+    SDL_Texture* tex = SDL_CreateTexture(Game::renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, maxProgress, bg_rect.h);
     SDL_SetRenderTarget(Game::renderer, tex);
     SDL_SetRenderDrawColor(Game::renderer, fg_color.r, fg_color.g, fg_color.b, fg_color.a);
     SDL_RenderFillRect(Game::renderer, &fg_rect);

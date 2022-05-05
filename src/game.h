@@ -27,6 +27,8 @@ class Game{
         bool onMenu() {return isMenuScreen;}
         static SDL_Renderer* renderer;
 
+        Uint32 startTime;
+
     private:
         bool isRunning;
         bool isMenuScreen;

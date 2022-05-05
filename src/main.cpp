@@ -4,10 +4,6 @@
 Game *game = nullptr;
 
 int main(int argc, char* argv[]) {
-    
-    const int FPS = 60;
-    const int frameDelay = 1000 / FPS;
-
     Uint32 frameStart;
     int frameTime;
 
@@ -21,6 +17,7 @@ int main(int argc, char* argv[]) {
 
         if(!game->onMenu())
         {
+            game->startTime = 0;
             game->handleEvents();
             game->update();
             game->render();
@@ -34,9 +31,9 @@ int main(int argc, char* argv[]) {
         frameTime = SDL_GetTicks() - frameStart;
 
         // check if too fast, then delay frame
-        if(frameDelay > frameTime)
+        if(globals::frameDelay > frameTime)
         {
-            SDL_Delay(frameDelay - frameTime);
+            SDL_Delay(globals::frameDelay - frameTime);
         }
     }
 

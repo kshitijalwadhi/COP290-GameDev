@@ -8,10 +8,11 @@ SDL_Color socialQuotientBarColor = {0, 255, 0};
 SDL_Color fitnessBarColor = {0, 0, 255};
 SDL_Color nerdinessBarColor = {255, 255, 0};
 
-GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type)
+GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime)
 {
     player_idx = player_idx;
     character_type = character_type;
+    startTime = startTime;
 
     objTexture = TextureManager::loadTexture(textureSheet);
 
@@ -33,10 +34,10 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
     ypos = y;
     facing = 1;
 
-    energy = 50;
-    socialQuotient = 10;
-    fitness = 50;
-    nerdiness = 30;
+    energy = 80.0;
+    socialQuotient = 10.0;
+    fitness = 40.0;
+    nerdiness = 30.0;
 
     energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
     socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
@@ -91,6 +92,8 @@ void GameObject::update()
     destRect.y = ypos;
     destRect.w = srcRect.w*globals::SPRITE_SCALE;
     destRect.h = srcRect.h*globals::SPRITE_SCALE;
+
+    energy -= globals::frameDelay * globals::energyDecay;
 
     energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
     socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
