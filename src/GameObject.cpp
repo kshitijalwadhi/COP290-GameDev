@@ -110,7 +110,7 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
     //     hop = globals::GRASS_SPEED;
     // }
 
-    hop = 1;
+    hop = 4;
 
     switch(event.key.keysym.sym)
         {
@@ -136,7 +136,7 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
                 break;
             case SDLK_s:
             case SDLK_DOWN:
-                if (!checkCollision(xpos,ypos+hop+destRect.h, map))
+                if (!checkCollision(xpos,ypos+hop, map))
                 {
                     ypos += hop;
                     facing = 2;
@@ -145,7 +145,7 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
                     int temp_hop = hop-1;
                     while(temp_hop>0)
                     {
-                        if (!checkCollision(xpos,ypos+temp_hop+destRect.h, map))
+                        if (!checkCollision(xpos,ypos+temp_hop, map))
                         {
                             ypos += temp_hop;
                             facing = 2;
@@ -176,7 +176,7 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
                 break;
             case SDLK_d:
             case SDLK_RIGHT:
-                if(!checkCollision(xpos+hop+destRect.w,ypos, map))
+                if(!checkCollision(xpos+hop,ypos, map))
                 {
                     xpos += hop;
                     facing = 1;
@@ -185,7 +185,7 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
                     int temp_hop = hop-1;
                     while(temp_hop>0)
                     {
-                        if(!checkCollision(xpos+temp_hop+destRect.w,ypos, map))
+                        if(!checkCollision(xpos+temp_hop,ypos, map))
                         {
                             xpos += temp_hop;
                             facing = 1;
@@ -215,12 +215,8 @@ void GameObject::render()
     TextureManager::drawProgressBar(nerdinessTex, dstRect_Nerdiness);
 }
 
-bool GameObject::checkCollision(int x, int y, int map[40][80])
+bool check(int loc)
 {
-    // adding temporarily:
-    int tempy = y/16;
-    int tempx = x/16;
-    int loc = map[tempy][tempx];
     bool collision = true;
     for(int i=0; i<globals::ROAD_IDX.size();i++)
     {
@@ -238,5 +234,41 @@ bool GameObject::checkCollision(int x, int y, int map[40][80])
             break;
         }
     }
+    for(int i=0; i<globals::TREE_IDX.size();i++)
+    {
+        if(loc == globals::TREE_IDX[i])
+        {
+            collision = false;
+            break;
+        }
+    }
     return collision;
+}
+
+bool GameObject::checkCollision(int x, int y, int map[40][80])
+{
+    int tempy, tempx, loc;
+    bool flag0, flag1, flag2, flag3;
+    
+    tempy = (y+8)/16;
+    tempx = (x+0.5)/16;
+    loc = map[tempy][tempx];
+    flag0 = check(loc);
+    
+    tempy = (y+8)/16;
+    tempx = (x+15.5)/16;
+    loc = map[tempy][tempx];
+    flag1 = check(loc);
+
+    tempy = (y+15.5)/16;
+    tempx = (x+0.5)/16;
+    loc = map[tempy][tempx];
+    flag2 = check(loc);
+
+    tempy = (y+15.5)/16;
+    tempx = (x+15.5)/16;
+    loc = map[tempy][tempx];
+    flag3 = check(loc);
+
+    return flag0 || flag1 || flag2 || flag3;
 }

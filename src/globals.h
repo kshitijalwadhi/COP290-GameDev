@@ -12,9 +12,9 @@ namespace globals {
 	const int GRASS_SPEED = 5;
 	const int ROAD_SPEED = 7;
 
-	const std::vector<int> GRASS_IDX = { 11, 12, 19, 20, 64, 65 };
-	const std::vector<int> TREE_IDX = { 30, 38, 76, 77, 92 };
-	const std::vector<int> ROAD_IDX = { 10, 18 }; 
+	const std::vector<int> GRASS_IDX = { 12, 13, 20, 21, 65, 66 };
+	const std::vector<int> TREE_IDX = { 31, 39, 77, 78, 93 };
+	const std::vector<int> ROAD_IDX = { 11, 19 }; 
 }
 
 #endif
