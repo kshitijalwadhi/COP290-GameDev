@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <fstream>
 #include <sstream>
+#include "globals.h"
 
 Map::Map(){
     textureMap = TextureManager::loadTexture("../assets/maps/basictiles.png");
@@ -58,6 +59,48 @@ void Map::drawMap(){
             dest.y = i * 16;
 
             TextureManager::draw(textureMap, src, dest);
+        }
+    }
+}
+
+bool checkValid(int loc)
+{
+    bool collision = true;
+    for(int i=0; i<globals::ROAD_IDX.size();i++)
+    {
+        if(loc == globals::ROAD_IDX[i])
+        {
+            collision = false;
+            break;
+        }
+    }
+    for(int i=0; i<globals::GRASS_IDX.size();i++)
+    {
+        if(loc == globals::GRASS_IDX[i])
+        {
+            collision = false;
+            break;
+        }
+    }
+    for(int i=0; i<globals::TREE_IDX.size();i++)
+    {
+        if(loc == globals::TREE_IDX[i])
+        {
+            collision = false;
+            break;
+        }
+    }
+    return collision;
+}
+
+std::pair<int,int> Map::validPos(){
+    int r, c, loc;
+    while(true){
+        r = rand() % 40;
+        c = rand() % 80;
+        loc = map_mat[r][c];
+        if(!checkValid(loc)){
+            return std::make_pair(r,c);
         }
     }
 }
