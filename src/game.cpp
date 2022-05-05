@@ -81,8 +81,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         isRunning = true;
         isMenuScreen = true;
 
-        player1 = new GameObject("../assets/sprites/MyChar.png", 100, 100, 1);
-        player2 = new GameObject("../assets/sprites/MyChar.png", 200, 200, 2);
+        player1 = new GameObject("../assets/sprites/characters.png", 100, 100, 1, 1);
+        //player2 = new GameObject("../assets/sprites/characters.png", 200, 200, 2, 7);
         map = new Map();
 
         menu = new Menu();
@@ -105,7 +105,7 @@ void Game::handleEvents()
         
         case SDL_KEYDOWN:
             player1->updatePos(event, map->map_mat);
-            player2->updatePos(event, map->map_mat);
+            //player2->updatePos(event, map->map_mat);
             break;
         
         default:
@@ -117,9 +117,7 @@ void Game::update()
 {
     // handle game logic here
     player1->update();
-    player2->update();
-
-    // add code to load map from .txt file from here
+    //player2->update();
 }
 
 void Game::render()
@@ -128,7 +126,7 @@ void Game::render()
     // rendering done here
     map->drawMap();
     player1->render();
-    player2->render();
+    //player2->render();
     SDL_RenderPresent(renderer);
 }
 

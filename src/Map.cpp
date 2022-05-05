@@ -4,10 +4,6 @@
 #include <sstream>
 
 Map::Map(){
-    dirt = TextureManager::loadTexture("../assets/maps/dirt.png");
-    grass = TextureManager::loadTexture("../assets/maps/grass.png");
-    water = TextureManager::loadTexture("../assets/maps/water.png");
-
     textureMap = TextureManager::loadTexture("../assets/maps/basictiles.png");
 
     loadMap("../assets/maps/map.txt");

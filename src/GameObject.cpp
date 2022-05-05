@@ -2,19 +2,16 @@
 #include "TextureManager.h"
 #include "globals.h"
 
-const int WALKING_ANIMATION_FRAMES = 6;
-SDL_Rect spriteRects_L[WALKING_ANIMATION_FRAMES];
-SDL_Rect spriteRects_R[WALKING_ANIMATION_FRAMES];
-
 SDL_Color bgColorBar = {0, 0, 0};
 SDL_Color energyBarColor = {255, 0, 0};
 SDL_Color socialQuotientBarColor = {0, 255, 0};
 SDL_Color fitnessBarColor = {0, 0, 255};
 SDL_Color nerdinessBarColor = {255, 255, 0};
 
-GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx)
+GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type)
 {
     player_idx = player_idx;
+    character_type = character_type;
 
     objTexture = TextureManager::loadTexture(textureSheet);
 
@@ -47,31 +44,46 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx)
 
     frames = 0;
 
-    spriteRects_L[0] = {0, 0, 16, 16};
-    spriteRects_L[1] = {16, 0, 16, 16};
-    spriteRects_L[2] = {32, 0, 16, 16};
-    spriteRects_L[3] = {48, 0, 16, 16};
-    spriteRects_L[4] = {64, 0, 16, 16};
-    spriteRects_L[5] = {80, 0, 16, 16};
+    int idx = character_type-1;
+    int st_x, st_y; 
+    st_y = 64 * (idx/4);
+    st_x = 48 * (idx%4);
 
-    spriteRects_R[0] = {0, 16, 16, 16};
-    spriteRects_R[1] = {16, 16, 16, 16};
-    spriteRects_R[2] = {32, 16, 16, 16};
-    spriteRects_R[3] = {48, 16, 16, 16};
-    spriteRects_R[4] = {64, 16, 16, 16};
-    spriteRects_R[5] = {80, 16, 16, 16};
+    spriteRects_D[0] = {st_x, st_y, 16, 16};
+    spriteRects_D[1] = {st_x+16, st_y, 16, 16};
+    spriteRects_D[2] = {st_x+32, st_y, 16, 16};
+
+    spriteRects_L[0] = {st_x, st_y+16, 16, 16};
+    spriteRects_L[1] = {st_x+16, st_y+16, 16, 16};
+    spriteRects_L[2] = {st_x+32, st_y+16, 16, 16};
+    
+    spriteRects_R[0] = {st_x, st_y+32, 16, 16};
+    spriteRects_R[1] = {st_x+16, st_y+32, 16, 16};
+    spriteRects_R[2] = {st_x+32, st_y+32, 16, 16};
+
+    spriteRects_U[0] = {st_x, st_y+48, 16, 16};
+    spriteRects_U[1] = {st_x+16, st_y+48, 16, 16};
+    spriteRects_U[2] = {st_x+32, st_y+48, 16, 16};
 }
 
 void GameObject::update()
 {
-    int idx = frames % 6;
-    if(facing == 3 || facing == 2)
+    int idx = frames % 3;
+    if(facing == 0)
+    {
+        srcRect = spriteRects_U[idx];
+    }
+    else if(facing == 1)
+    {
+        srcRect = spriteRects_R[idx];
+    }
+    else if(facing == 2)
+    {
+        srcRect = spriteRects_D[idx];
+    }
+    else if(facing == 3)
     {
         srcRect = spriteRects_L[idx];
-    }
-    else
-    {   
-        srcRect = spriteRects_R[idx];
     }
 
     destRect.x = xpos;
@@ -148,6 +160,7 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
 void GameObject::render()
 {
     SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+    std::cout<<"xpos: "<<xpos<<" ypos: "<<ypos<<std::endl;
     TextureManager::drawProgressBar(energyTex, dstRect_Energy);
     TextureManager::drawProgressBar(socialQuotientTex, dstRect_SocialQuotient);
     TextureManager::drawProgressBar(fitnessTex, dstRect_Fitness);
