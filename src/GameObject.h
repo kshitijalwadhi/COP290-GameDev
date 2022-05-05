@@ -12,11 +12,12 @@ class GameObject{
         void update();
 
         void updatePos(SDL_Event event, int map[40][80]);
-
+        
     private:
+        int xpos, ypos;
+        
         int player_idx;
         int character_type;
-        int xpos, ypos;
         int facing; // 0: up, 1: right, 2: down, 3: left
         int frames;
 

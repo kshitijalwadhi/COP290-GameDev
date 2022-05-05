@@ -31,6 +31,7 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
 
     xpos = x;
     ypos = y;
+    facing = 1;
 
     energy = 50;
     socialQuotient = 10;
@@ -109,7 +110,7 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
     //     hop = globals::GRASS_SPEED;
     // }
 
-    hop = globals::WATER_SPEED;
+    hop = 3;
 
     switch(event.key.keysym.sym)
         {
@@ -160,7 +161,6 @@ void GameObject::updatePos(SDL_Event event, int map[40][80])
 void GameObject::render()
 {
     SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
-    std::cout<<"xpos: "<<xpos<<" ypos: "<<ypos<<std::endl;
     TextureManager::drawProgressBar(energyTex, dstRect_Energy);
     TextureManager::drawProgressBar(socialQuotientTex, dstRect_SocialQuotient);
     TextureManager::drawProgressBar(fitnessTex, dstRect_Fitness);

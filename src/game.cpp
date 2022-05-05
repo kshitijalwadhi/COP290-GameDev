@@ -81,9 +81,10 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         isRunning = true;
         isMenuScreen = true;
 
+        map = new Map();
+
         player1 = new GameObject("../assets/sprites/characters.png", 100, 100, 1, 1);
         //player2 = new GameObject("../assets/sprites/characters.png", 200, 200, 2, 7);
-        map = new Map();
 
         menu = new Menu();
     }
