@@ -88,14 +88,16 @@ void GameObject::update()
 void GameObject::updatePos(SDL_Event event, int map[40][80])
 {
     int hop;
-    if(map[(ypos/30)][(xpos/30)] == 0)
-    {
-        hop = globals::WATER_SPEED;
-    }
-    else if(map[(ypos/30)][(xpos/30)] == 1)
-    {
-        hop = globals::GRASS_SPEED;
-    }
+    // if(map[(ypos/30)][(xpos/30)] == 0)
+    // {
+    //     hop = globals::WATER_SPEED;
+    // }
+    // else if(map[(ypos/30)][(xpos/30)] == 1)
+    // {
+    //     hop = globals::GRASS_SPEED;
+    // }
+
+    hop = globals::WATER_SPEED;
 
     switch(event.key.keysym.sym)
         {
@@ -154,6 +156,8 @@ void GameObject::render()
 
 bool GameObject::checkCollision(int x, int y, int map[40][80])
 {
+    // adding temporarily:
+    return false;
     int tempy = y/30;
     int tempx = x/30;
     if(map[tempy][tempx] == 2)

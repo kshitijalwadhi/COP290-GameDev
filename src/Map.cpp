@@ -8,6 +8,8 @@ Map::Map(){
     grass = TextureManager::loadTexture("../assets/maps/grass.png");
     water = TextureManager::loadTexture("../assets/maps/water.png");
 
+    textureMap = TextureManager::loadTexture("../assets/maps/basictiles.png");
+
     loadMap("../assets/maps/map.txt");
 
     src.x = src.y = 0;
@@ -35,34 +37,31 @@ void Map::loadMap(const char* fname){
 
     for(int i = 0; i < 40; i++){
         for(int j = 0; j < 80; j++){
-            map[i][j] = mat[i][j];
+            map_mat[i][j] = mat[i][j];
         }
     }
 }
 
 void Map::drawMap(){
-    int type = 0;
-
+    int idx = 0;
+    int r=0,c=0;
     for(int i=0; i<40; i++){
         for(int j=0; j<80; j++){
-            type = map[i][j];
+            idx = map_mat[i][j]-1;
 
-            src.x = src.y = 0;
-            src.w = dest.w = dest.h = 16;
+            r = idx/8;
+            c = idx%8;
+
+            src.x = c*16;
+            src.y = r*16;
+            src.w = 16;
+            src.h = 16;
+
+            dest.w = dest.h = 16;
             dest.x = j * 16;
             dest.y = i * 16;
 
-            switch(type){
-                case 0:
-                    TextureManager::draw(water, src, dest);
-                    break;
-                case 1:
-                    TextureManager::draw(grass, src, dest);
-                    break;
-                default:
-                    TextureManager::draw(dirt, src, dest);
-                    break;
-            }
+            TextureManager::draw(textureMap, src, dest);
         }
     }
 }

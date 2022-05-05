@@ -1,5 +1,6 @@
 #include "game.h"
 #include <vector>
+#include <map>
 
 class Map{
     public:
@@ -9,8 +10,7 @@ class Map{
 
         void loadMap(const char* fname);
         void drawMap();
-
-        int map[40][80];
+        int map_mat[40][80];
 
     private:
 
@@ -18,4 +18,5 @@ class Map{
         SDL_Texture* dirt;
         SDL_Texture* grass;
         SDL_Texture* water;
+        SDL_Texture* textureMap;
 };
