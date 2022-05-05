@@ -98,20 +98,45 @@ void GameObject::update()
     nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
 }
 
+int returnSpeed(int loc)
+{
+    int speed = 0;
+    for(int i=0; i<globals::ROAD_IDX.size();i++)
+    {
+        if(loc == globals::ROAD_IDX[i])
+        {
+            speed = globals::ROAD_SPEED;
+            break;
+        }
+    }
+    for(int i=0; i<globals::GRASS_IDX.size();i++)
+    {
+        if(loc == globals::GRASS_IDX[i])
+        {
+            speed = globals::GRASS_SPEED;
+            break;
+        }
+    }
+    for(int i=0; i<globals::TREE_IDX.size();i++)
+    {
+        if(loc == globals::TREE_IDX[i])
+        {
+            speed = globals::TREE_SPEED;
+            break;
+        }
+    }
+    return speed;
+}
+
 void GameObject::updatePos(SDL_Event event, int map[40][80])
 {
-    int hop;
-    // if(map[(ypos/30)][(xpos/30)] == 0)
-    // {
-    //     hop = globals::WATER_SPEED;
-    // }
-    // else if(map[(ypos/30)][(xpos/30)] == 1)
-    // {
-    //     hop = globals::GRASS_SPEED;
-    // }
+    int tempy = (ypos+8)/16;
+    int tempx = (xpos+0.5)/16;
+    int loc = map[tempy][tempx];
+    int hop = returnSpeed(loc);
 
-    hop = 4;
-
+    if(event.key.keysym.sym == SDLK_LSHIFT)
+        hop = 1;
     switch(event.key.keysym.sym)
         {
             case SDLK_w:

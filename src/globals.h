@@ -9,8 +9,9 @@ namespace globals {
 
 	const float SPRITE_SCALE = 1.0f;
 
-	const int GRASS_SPEED = 5;
-	const int ROAD_SPEED = 7;
+	const int TREE_SPEED = 1;
+	const int GRASS_SPEED = 2;
+	const int ROAD_SPEED = 4;
 
 	const std::vector<int> GRASS_IDX = { 12, 13, 20, 21, 65, 66 };
 	const std::vector<int> TREE_IDX = { 31, 39, 77, 78, 93 };
