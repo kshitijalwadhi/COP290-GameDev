@@ -23,10 +23,10 @@ void TextureManager::drawBG(SDL_Texture* tex)
     SDL_RenderCopy(Game::renderer, tex, NULL, NULL);
 }
 
-SDL_Texture* TextureManager::loadTextureFromText(const char* text, const char* fontFile, int size, SDL_Color color)
+SDL_Texture* TextureManager::loadTextureFromText(std::string text, const char* fontFile, int size, SDL_Color color)
 {
     TTF_Font* font = TTF_OpenFont(fontFile, size);
-    SDL_Surface* surf = TTF_RenderText_Solid(font, text, color);
+    SDL_Surface* surf = TTF_RenderText_Solid(font, text.c_str(), color);
     if(surf == NULL)
     {
         printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());

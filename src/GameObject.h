@@ -20,6 +20,7 @@ class GameObject{
         bool isEnemy;
         int enemyDamper;
         
+        int money;
         int player_idx;
         int character_type;
         int facing; // 0: up, 1: right, 2: down, 3: left
@@ -40,7 +41,12 @@ class GameObject{
         SDL_Rect srcRect, destRect;       
 
         SDL_Texture* energyTex, *socialQuotientTex, *fitnessTex, *nerdinessTex;
-        SDL_Rect dstRect_Energy, dstRect_SocialQuotient, dstRect_Fitness, dstRect_Nerdiness;     
+        SDL_Rect dstRect_Energy, dstRect_SocialQuotient, dstRect_Fitness, dstRect_Nerdiness;  
+
+        SDL_Texture* moneyTex;
+        SDL_Texture* energyLabelTex, *socialQuotientLabelTex, *fitnessLabelTex, *nerdinessLabelTex, *moneyLabelTex;  
+
+        SDL_Rect dstRect_Money, dstRect_EnergyLabel, dstRect_SocialQuotientLabel, dstRect_FitnessLabel, dstRect_NerdinessLabel, dstRect_MoneyLabel; 
 
         bool checkCollision(int x, int y, int map[40][80]);
 

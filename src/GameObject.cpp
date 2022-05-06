@@ -17,21 +17,37 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
     isEnemy = isEnemy;
     enemyDamper = 0;
 
+    money = 1000;
+
     objTexture = TextureManager::loadTexture(textureSheet);
 
         if(player_idx==1)
         {
-            dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = 0;
+            dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = dstRect_Money.x = 35*16;
+            dstRect_EnergyLabel.x = dstRect_FitnessLabel.x = dstRect_NerdinessLabel.x = dstRect_SocialQuotientLabel.x = dstRect_MoneyLabel.x = 30*16;
         }
         else{
-            dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = globals::SCREEN_WIDTH - 100;
+            dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = dstRect_Money.x = 69*16;
+            dstRect_EnergyLabel.x = dstRect_FitnessLabel.x = dstRect_NerdinessLabel.x = dstRect_SocialQuotientLabel.x = dstRect_MoneyLabel.x = 64*16;
         }
-        dstRect_Energy.y = 0;
-        dstRect_Fitness.y = 10;
-        dstRect_Nerdiness.y = 20;
-        dstRect_SocialQuotient.y = 30;
+        dstRect_Energy.y = 31*16;
+        dstRect_Fitness.y = dstRect_Energy.y + 10;
+        dstRect_Nerdiness.y = dstRect_Fitness.y + 10;
+        dstRect_SocialQuotient.y = dstRect_Nerdiness.y + 10;
         dstRect_Energy.w = dstRect_Fitness.w = dstRect_Nerdiness.w = dstRect_SocialQuotient.w = 100;
         dstRect_Energy.h = dstRect_Fitness.h = dstRect_Nerdiness.h = dstRect_SocialQuotient.h = 10;
+
+        dstRect_EnergyLabel.y = dstRect_Energy.y;
+        dstRect_FitnessLabel.y = dstRect_Fitness.y;
+        dstRect_NerdinessLabel.y = dstRect_Nerdiness.y;
+        dstRect_SocialQuotientLabel.y = dstRect_SocialQuotient.y;
+        dstRect_EnergyLabel.w = dstRect_FitnessLabel.w = dstRect_NerdinessLabel.w = dstRect_SocialQuotientLabel.w = 50;
+        dstRect_EnergyLabel.h = dstRect_FitnessLabel.h = dstRect_NerdinessLabel.h = dstRect_SocialQuotientLabel.h = 10;
+
+        dstRect_Money.y = dstRect_SocialQuotient.y + 15;
+        dstRect_Money.w = dstRect_MoneyLabel.w = 50;
+        dstRect_Money.h = dstRect_MoneyLabel.h = 10;
+        dstRect_MoneyLabel.y = dstRect_Money.y;
 
         energy = 80.0;
         socialQuotient = 10.0;
@@ -44,6 +60,14 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
         socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
         fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
         nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
+
+        moneyTex = TextureManager::loadTextureFromText(std::to_string(money), "../assets/fonts/Raleway-Medium.ttf", 16, {255, 255, 255});
+
+        energyLabelTex = TextureManager::loadTextureFromText("Energy", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        socialQuotientLabelTex = TextureManager::loadTextureFromText("Social Quotient", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        fitnessLabelTex = TextureManager::loadTextureFromText("Fitness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        nerdinessLabelTex = TextureManager::loadTextureFromText("Nerdiness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        moneyLabelTex = TextureManager::loadTextureFromText("Money: $", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
     }
     else{
         energyTex = socialQuotientTex = fitnessTex = nerdinessTex = nullptr;
@@ -84,6 +108,12 @@ GameObject::~GameObject()
     SDL_DestroyTexture(socialQuotientTex);
     SDL_DestroyTexture(fitnessTex);
     SDL_DestroyTexture(nerdinessTex);
+    SDL_DestroyTexture(moneyTex);
+    SDL_DestroyTexture(energyLabelTex);
+    SDL_DestroyTexture(socialQuotientLabelTex);
+    SDL_DestroyTexture(fitnessLabelTex);
+    SDL_DestroyTexture(nerdinessLabelTex);
+    SDL_DestroyTexture(moneyLabelTex);
 }
 
 void GameObject::update()
@@ -119,6 +149,13 @@ void GameObject::update()
         socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
         fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
         nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
+
+        moneyTex = TextureManager::loadTextureFromText(std::to_string(money), "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        energyLabelTex = TextureManager::loadTextureFromText("Energy", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        socialQuotientLabelTex = TextureManager::loadTextureFromText("Social Quotient", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        fitnessLabelTex = TextureManager::loadTextureFromText("Fitness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        nerdinessLabelTex = TextureManager::loadTextureFromText("Nerdiness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+        moneyLabelTex = TextureManager::loadTextureFromText("Money: $", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
     }
 }
 
@@ -443,11 +480,20 @@ void GameObject::render()
         TextureManager::drawProgressBar(socialQuotientTex, dstRect_SocialQuotient);
         TextureManager::drawProgressBar(fitnessTex, dstRect_Fitness);
         TextureManager::drawProgressBar(nerdinessTex, dstRect_Nerdiness);
+        SDL_RenderCopy(Game::renderer, energyLabelTex, NULL, &dstRect_EnergyLabel);
+        SDL_RenderCopy(Game::renderer, socialQuotientLabelTex, NULL, &dstRect_SocialQuotientLabel);
+        SDL_RenderCopy(Game::renderer, fitnessLabelTex, NULL, &dstRect_FitnessLabel);
+        SDL_RenderCopy(Game::renderer, nerdinessLabelTex, NULL, &dstRect_NerdinessLabel);
+        SDL_RenderCopy(Game::renderer, moneyLabelTex, NULL, &dstRect_MoneyLabel);
+        SDL_RenderCopy(Game::renderer, moneyTex, NULL, &dstRect_Money);
     }
     SDL_DestroyTexture(energyTex);
     SDL_DestroyTexture(socialQuotientTex);
     SDL_DestroyTexture(fitnessTex);
     SDL_DestroyTexture(nerdinessTex);
+    SDL_DestroyTexture(moneyTex);
+    SDL_DestroyTexture(energyLabelTex);
+    SDL_DestroyTexture(moneyLabelTex);
 }
 
 bool check(int loc)
