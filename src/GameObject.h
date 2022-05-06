@@ -5,20 +5,16 @@ const int WALKING_ANIMATION_FRAMES = 3;
 class GameObject{
 
     public:
-        GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime, bool isEnemy);
+        GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime);
         ~GameObject();
 
         void render();
         void update();
 
         void updatePos(SDL_Event event, const Uint8 *state, int map[40][80], int player_idx);
-        void updatePosEnemy(int map[40][80]);
         
     private:
         int xpos, ypos;
-
-        bool isEnemy;
-        int enemyDamper;
         
         int money;
         int player_idx;

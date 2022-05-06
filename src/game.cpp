@@ -86,8 +86,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
         map = new Map();
 
-        player1 = new GameObject("../assets/sprites/characters.png", 128, 48, 1, 1, startTime, false);
-        player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime, false);
+        player1 = new GameObject("../assets/sprites/characters.png", 128, 48, 1, 1, startTime);
+        player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime);
 
         menu = new Menu();
         startTime = 0;
