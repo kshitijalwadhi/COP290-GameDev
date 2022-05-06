@@ -21,8 +21,14 @@ namespace globals {
 	const std::vector<int> ROAD_IDX = { 11, 19 }; 
 
 	const float energyDecay = 0.001;
+
 	const int enemySpawnRate = 50;
 	const int maxEnemies = 5;
+	
+	const int speedDampingFactor = 4;
+	const int enemySpeed_ROAD = 2;
+	const int enemySpeed_GRASS = 1;
+	const int enemySpeed_TREE = 1;
 }
 
 #endif

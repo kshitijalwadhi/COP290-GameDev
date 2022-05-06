@@ -15,6 +15,7 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
     startTime = startTime;
 
     isEnemy = isEnemy;
+    enemyDamper = 0;
 
     objTexture = TextureManager::loadTexture(textureSheet);
 
@@ -151,94 +152,84 @@ int returnSpeed(int loc)
     return speed;
 }
 
+int returnSpeedEnemy(int loc, int enemyDamper)
+{
+    int speed = 0;
+    if(enemyDamper%globals::speedDampingFactor != 0)
+        return speed;
+    for(int i=0; i<globals::ROAD_IDX.size();i++)
+    {
+        if(loc == globals::ROAD_IDX[i])
+        {
+            speed = globals::ROAD_SPEED;
+            break;
+        }
+    }
+    for(int i=0; i<globals::GRASS_IDX.size();i++)
+    {
+        if(loc == globals::GRASS_IDX[i])
+        {
+            speed = globals::GRASS_SPEED;
+            break;
+        }
+    }
+    for(int i=0; i<globals::TREE_IDX.size();i++)
+    {
+        if(loc == globals::TREE_IDX[i])
+        {
+            speed = globals::TREE_SPEED;
+            break;
+        }
+    }
+    return speed;
+}
+
 void GameObject::updatePosEnemy(int map[40][80])
 {
+    enemyDamper++;
     int tempy = (ypos+8)/16;
     int tempx = (xpos+0.5)/16;
     int loc = map[tempy][tempx];
-    int hop = returnSpeed(loc);
-
-    int rnd = rand()%4;
-    
-    switch(rnd)
-        {
-            case 0:
-                if (!checkCollision(xpos,ypos-hop, map))
-                {
-                    ypos -= hop;
-                    facing = 0;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
-                    {
-                        if (!checkCollision(xpos,ypos-temp_hop, map))
-                        {
-                            ypos -= temp_hop;
-                            facing = 0;
-                        }
-                        temp_hop--;
-                    }
-                }
-                break;
-            case 2:
-                if (!checkCollision(xpos,ypos+hop, map))
-                {
-                    ypos += hop;
-                    facing = 2;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
-                    {
-                        if (!checkCollision(xpos,ypos+temp_hop, map))
-                        {
-                            ypos += temp_hop;
-                            facing = 2;
-                        }
-                        temp_hop--;
-                    }
-                }
-                break;
-            case 3:
-                if(!checkCollision(xpos-hop,ypos, map))
-                {
-                    xpos -= hop;
-                    facing = 3;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
-                    {
-                        if(!checkCollision(xpos-temp_hop,ypos, map))
-                        {
-                            xpos -= temp_hop;
-                            facing = 3;
-                        }
-                        temp_hop--;
-                    }
-                }
-                break;
-            case 1:
-                if(!checkCollision(xpos+hop,ypos, map))
-                {
-                    xpos += hop;
-                    facing = 1;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
-                    {
-                        if(!checkCollision(xpos+temp_hop,ypos, map))
-                        {
-                            xpos += temp_hop;
-                            facing = 1;
-                        }
-                        temp_hop--;
-                    }
-                }
-                break;
-        }
+    int hop = returnSpeedEnemy(loc, enemyDamper);
+    switch(facing)
+    {
+        case 0:
+            if(!checkCollision(xpos,ypos-hop,map))
+            {
+                ypos -= hop;
+            }
+            else{
+                facing = rand()%4;
+            }
+            break;
+        case 1:
+            if(!checkCollision(xpos+hop,ypos,map))
+            {
+                xpos += hop;
+            }
+            else{
+                facing = rand()%4;
+            }
+            break;
+        case 2:
+            if(!checkCollision(xpos,ypos+hop,map))
+            {
+                ypos += hop;
+            }
+            else{
+                facing = rand()%4;
+            }
+            break;
+        case 3:
+            if(!checkCollision(xpos-hop,ypos,map))
+            {
+                xpos -= hop;
+            }
+            else{
+                facing = rand()%4;
+            }
+            break;
+    }
     frames++;
     if(xpos <0)
         xpos = 0;

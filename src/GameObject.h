@@ -18,6 +18,7 @@ class GameObject{
         int xpos, ypos;
 
         bool isEnemy;
+        int enemyDamper;
         
         int player_idx;
         int character_type;
