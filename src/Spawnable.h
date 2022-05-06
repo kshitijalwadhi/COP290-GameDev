@@ -8,6 +8,11 @@ class Spawnable{
 
         void update();
         void render();
+
+        int getX();
+        int getY();
+        int getPotionType();
+        int getCapacity();
     private:
         int xpos, ypos;
         int potion_type;

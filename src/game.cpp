@@ -11,7 +11,7 @@ GameObject* player2;
 
 std::vector<Enemy*> enemies;
 
-Spawnable* spawnable;
+std::vector<Spawnable*> spawnables;
 
 Map* map;
 
@@ -93,8 +93,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime);
 
         std::pair<int,int> valSpawn = map->validPos();
-        spawnable = new Spawnable("../assets/collectibles/potions-tileset.png",valSpawn.first*16, valSpawn.second*16, 1,1);
-
+        Spawnable* spawnable = new Spawnable("../assets/collectibles/potions-tileset.png",valSpawn.first*16, valSpawn.second*16, 1,1);
+        spawnables.push_back(spawnable);
         menu = new Menu();
         startTime = 0;
         numEnemies = 0;
@@ -137,6 +137,26 @@ void Game::enemySpawnHelper()
     }
 }
 
+void Game::checkSpawnableIntersection()
+{
+    bool intersect_1, intersect_2;
+    for(int i=0; i<spawnables.size(); i++)
+    {
+        intersect_1 = false;
+        intersect_2 = false;
+        int xpos_spawn = spawnables[i]->getX();
+        int ypos_spawn = spawnables[i]->getY();
+        intersect_1 = player1->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
+        intersect_2 = player2->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
+        if(intersect_1 || intersect_2)
+        {
+            spawnables[i]->~Spawnable();
+            spawnables.erase(spawnables.begin()+i);
+            i--;
+        }
+    }
+}
+
 void Game::update()
 {
     // handle game logic here
@@ -150,6 +170,7 @@ void Game::update()
         enemy->update();
         enemy->updatePosEnemy(map->map_mat);
     }
+    checkSpawnableIntersection();
 }
 
 void Game::render()
@@ -159,7 +180,10 @@ void Game::render()
     map->drawMap();
     player1->render();
     player2->render();
-    spawnable->render();
+    for(auto spawnable : spawnables)
+    {
+        spawnable->render();
+    }
     for(auto enemy : enemies)
     {
         enemy->render();

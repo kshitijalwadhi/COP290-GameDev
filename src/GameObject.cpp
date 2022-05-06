@@ -107,6 +107,14 @@ GameObject::~GameObject()
     SDL_DestroyTexture(moneyLabelTex);
 }
 
+int GameObject::getX(){
+    return xpos;
+}
+
+int GameObject::getY(){
+    return ypos;
+}
+
 void GameObject::update(int map[40][80])
 {
     int idx = frames % 3;
@@ -145,6 +153,18 @@ void GameObject::update(int map[40][80])
     fitnessLabelTex = TextureManager::loadTextureFromText("Fitness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
     nerdinessLabelTex = TextureManager::loadTextureFromText("Nerdiness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
     moneyLabelTex = TextureManager::loadTextureFromText("Money: $", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+}
+
+bool GameObject::checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, int type, int capacity)
+{
+    bool intersect = false;
+    int x_spawn_centre = x_spawn + 8;
+    int y_spawn_centre = y_spawn + 8;
+    if(xpos<=x_spawn_centre && x_spawn_centre<=xpos+16 && ypos<=y_spawn_centre && y_spawn_centre<=ypos+16)
+    {
+        intersect = true;
+    }
+    return intersect;
 }
 
 int returnSpeed(int loc)

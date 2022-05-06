@@ -27,6 +27,26 @@ Spawnable::~Spawnable()
     SDL_DestroyTexture(objTexture);
 }
 
+int Spawnable::getX()
+{
+    return xpos;
+}
+
+int Spawnable::getY()
+{
+    return ypos;
+}
+
+int Spawnable::getPotionType()
+{
+    return potion_type;
+}
+
+int Spawnable::getCapacity()
+{
+    return capacity;
+}
+
 void Spawnable::update()
 {
 

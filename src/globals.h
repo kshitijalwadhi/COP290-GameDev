@@ -13,6 +13,8 @@ namespace globals {
 	const float SPRITE_SCALE = 1.0f;
 	const float SPAWNABLE_SCALE = 1.0f;
 
+	const int maxSpawnables = 5;
+
 	const int TREE_SPEED = 1;
 	const int GRASS_SPEED = 2;
 	const int ROAD_SPEED = 4;
@@ -40,7 +42,7 @@ namespace globals {
 	const float socialQuotientGain = 0.002;
 	const float fitnessGain = 0.002;
 	
-	const int enemySpawnRate = 50;
+	const int enemySpawnRate = 500;
 	const int maxEnemies = 5;
 	
 	const int speedDampingFactor = 4;

@@ -25,6 +25,8 @@ class Game{
 
         void enemySpawnHelper();
 
+        void checkSpawnableIntersection();
+
         bool running() { return isRunning; }
         bool onMenu() {return isMenuScreen;}
         static SDL_Renderer* renderer;
