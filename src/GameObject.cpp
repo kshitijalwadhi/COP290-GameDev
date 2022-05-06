@@ -132,7 +132,6 @@ void GameObject::update(int map[40][80])
     destRect.w = srcRect.w*globals::SPRITE_SCALE;
     destRect.h = srcRect.h*globals::SPRITE_SCALE;
 
-    //energy -= globals::frameDelay * globals::energyDecay;
     updateAttrs(map);
 
     energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
@@ -172,6 +171,14 @@ int returnSpeed(int loc)
         if(loc == globals::TREE_IDX[i])
         {
             speed = globals::TREE_SPEED;
+            break;
+        }
+    }
+    for(auto pos:globals::BUILDINGS_IDX)
+    {
+        if(loc == pos)
+        {
+            speed = globals::BUILDING_SPEED;
             break;
         }
     }
@@ -425,6 +432,14 @@ bool check(int loc)
             break;
         }
     }
+    for(auto pos: globals::BUILDINGS_IDX)
+    {
+        if(loc == pos)
+        {
+            collision = false;
+            break;
+        }
+    }
     return collision;
 }
 
@@ -469,7 +484,7 @@ int getPosn(int x, int y, int map[40][80])
     tempy = (y+8)/16;
     tempx = (x+0.5)/16;
     loc = map[tempy][tempx];
-    
+
     for(auto idx:globals::HOSTEL_IDX)
     {
         if(loc == idx)
@@ -499,9 +514,7 @@ int getPosn(int x, int y, int map[40][80])
 
 void GameObject::updateAttrs(int map[40][80])
 {
-    int tempy = (ypos+8)/16;
-    int tempx = (xpos+0.5)/16;
-    int loc = getPosn(tempx, tempy, map);
+    int loc = getPosn(xpos, ypos, map);
 
     energy -= globals::frameDelay * globals::energyDecay;
     socialQuotient -= globals::frameDelay * globals::socialQuotientDecay;

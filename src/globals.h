@@ -15,10 +15,12 @@ namespace globals {
 	const int TREE_SPEED = 1;
 	const int GRASS_SPEED = 2;
 	const int ROAD_SPEED = 4;
+	const int BUILDING_SPEED = 2;
 
 	const std::vector<int> GRASS_IDX = { 12, 13, 20, 21, 65, 66 };
 	const std::vector<int> TREE_IDX = { 31, 39, 77, 78, 93 };
 	const std::vector<int> ROAD_IDX = { 11, 19 }; 
+	const std::vector<int> BUILDINGS_IDX = { 50, 89, 15, 9 };
 	const std::vector<int> STUDY_IDX = { 50 };
 	const std::vector<int> FOOD_IDX = { 89 };
 	const std::vector<int> HOSTEL_IDX = { 15 };
