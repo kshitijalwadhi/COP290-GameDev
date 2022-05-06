@@ -110,8 +110,8 @@ void Game::handleEvents()
             break;
         
         case SDL_KEYDOWN:
-            player1->updatePos(event, state, map->map_mat);
-            //player2->updatePos(event, map->map_mat);
+            player1->updatePos(event, state, map->map_mat,1);
+            player2->updatePos(event, state, map->map_mat,2);
             break;
         
         default:

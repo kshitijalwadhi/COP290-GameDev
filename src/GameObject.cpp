@@ -241,7 +241,7 @@ void GameObject::updatePosEnemy(int map[40][80])
         ypos = globals::SCREEN_HEIGHT - destRect.h;
 }
 
-void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
+void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80], int player_idx)
 {
     int tempy = (ypos+8)/16;
     int tempx = (xpos+0.5)/16;
@@ -250,9 +250,96 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
 
     if(state[SDL_SCANCODE_LSHIFT])
         hop = 1;
-    switch(event.key.keysym.sym)
+
+    if(player_idx == 1)
+    {
+        switch(event.key.keysym.sym)
         {
             case SDLK_w:
+                if (!checkCollision(xpos,ypos-hop, map))
+                {
+                    ypos -= hop;
+                    facing = 0;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if (!checkCollision(xpos,ypos-temp_hop, map))
+                        {
+                            ypos -= temp_hop;
+                            facing = 0;
+                        }
+                        temp_hop--;
+                    }
+                }
+                frames++;
+                break;
+            case SDLK_s:
+                if (!checkCollision(xpos,ypos+hop, map))
+                {
+                    ypos += hop;
+                    facing = 2;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if (!checkCollision(xpos,ypos+temp_hop, map))
+                        {
+                            ypos += temp_hop;
+                            facing = 2;
+                        }
+                        temp_hop--;
+                    }
+                }
+                frames++;
+                break;
+            case SDLK_a:
+                if(!checkCollision(xpos-hop,ypos, map))
+                {
+                    xpos -= hop;
+                    facing = 3;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if(!checkCollision(xpos-temp_hop,ypos, map))
+                        {
+                            xpos -= temp_hop;
+                            facing = 3;
+                        }
+                        temp_hop--;
+                    }
+                }
+                frames++;
+                break;
+            case SDLK_d:
+                if(!checkCollision(xpos+hop,ypos, map))
+                {
+                    xpos += hop;
+                    facing = 1;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if(!checkCollision(xpos+temp_hop,ypos, map))
+                        {
+                            xpos += temp_hop;
+                            facing = 1;
+                        }
+                        temp_hop--;
+                    }
+                }
+                frames++;
+                break;
+        }
+    }
+    else{
+        switch(event.key.keysym.sym)
+        {
             case SDLK_UP:
                 if (!checkCollision(xpos,ypos-hop, map))
                 {
@@ -271,8 +358,8 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
                         temp_hop--;
                     }
                 }
+                frames++;
                 break;
-            case SDLK_s:
             case SDLK_DOWN:
                 if (!checkCollision(xpos,ypos+hop, map))
                 {
@@ -291,8 +378,8 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
                         temp_hop--;
                     }
                 }
+                frames++;
                 break;
-            case SDLK_a:
             case SDLK_LEFT:
                 if(!checkCollision(xpos-hop,ypos, map))
                 {
@@ -311,8 +398,8 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
                         temp_hop--;
                     }
                 }
+                frames++;
                 break;
-            case SDLK_d:
             case SDLK_RIGHT:
                 if(!checkCollision(xpos+hop,ypos, map))
                 {
@@ -331,9 +418,10 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
                         temp_hop--;
                     }
                 }
+                frames++;
                 break;
         }
-    frames++;
+    }
     if(xpos <0)
         xpos = 0;
     if(ypos <0)
