@@ -354,6 +354,10 @@ void GameObject::render()
         TextureManager::drawProgressBar(fitnessTex, dstRect_Fitness);
         TextureManager::drawProgressBar(nerdinessTex, dstRect_Nerdiness);
     }
+    SDL_DestroyTexture(energyTex);
+    SDL_DestroyTexture(socialQuotientTex);
+    SDL_DestroyTexture(fitnessTex);
+    SDL_DestroyTexture(nerdinessTex);
 }
 
 bool check(int loc)
