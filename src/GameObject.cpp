@@ -8,41 +8,49 @@ SDL_Color socialQuotientBarColor = {0, 255, 0};
 SDL_Color fitnessBarColor = {0, 0, 255};
 SDL_Color nerdinessBarColor = {255, 255, 0};
 
-GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime)
+GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime, bool isEnemy)
 {
     player_idx = player_idx;
     character_type = character_type;
     startTime = startTime;
 
+    isEnemy = isEnemy;
+
     objTexture = TextureManager::loadTexture(textureSheet);
 
-    if(player_idx==1)
+        if(player_idx==1)
+        {
+            dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = 0;
+        }
+        else{
+            dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = globals::SCREEN_WIDTH - 100;
+        }
+        dstRect_Energy.y = 0;
+        dstRect_Fitness.y = 10;
+        dstRect_Nerdiness.y = 20;
+        dstRect_SocialQuotient.y = 30;
+        dstRect_Energy.w = dstRect_Fitness.w = dstRect_Nerdiness.w = dstRect_SocialQuotient.w = 100;
+        dstRect_Energy.h = dstRect_Fitness.h = dstRect_Nerdiness.h = dstRect_SocialQuotient.h = 10;
+
+        energy = 80.0;
+        socialQuotient = 10.0;
+        fitness = 40.0;
+        nerdiness = 30.0;
+
+    if(!isEnemy)
     {
-        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = 0;
+        energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
+        socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
+        fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
+        nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
     }
     else{
-        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = globals::SCREEN_WIDTH - 100;
+        energyTex = socialQuotientTex = fitnessTex = nerdinessTex = nullptr;
     }
-    dstRect_Energy.y = 0;
-    dstRect_Fitness.y = 10;
-    dstRect_Nerdiness.y = 20;
-    dstRect_SocialQuotient.y = 30;
-    dstRect_Energy.w = dstRect_Fitness.w = dstRect_Nerdiness.w = dstRect_SocialQuotient.w = 100;
-    dstRect_Energy.h = dstRect_Fitness.h = dstRect_Nerdiness.h = dstRect_SocialQuotient.h = 10;
 
     xpos = x;
     ypos = y;
     facing = 1;
-
-    energy = 80.0;
-    socialQuotient = 10.0;
-    fitness = 40.0;
-    nerdiness = 30.0;
-
-    energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
-    socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
-    fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
-    nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
 
     frames = 0;
 
@@ -102,12 +110,15 @@ void GameObject::update()
     destRect.w = srcRect.w*globals::SPRITE_SCALE;
     destRect.h = srcRect.h*globals::SPRITE_SCALE;
 
-    energy -= globals::frameDelay * globals::energyDecay;
+    if(!isEnemy)
+    {
+        energy -= globals::frameDelay * globals::energyDecay;
 
-    energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
-    socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
-    fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
-    nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
+        energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
+        socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
+        fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
+        nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
+    }
 }
 
 int returnSpeed(int loc)
@@ -138,6 +149,105 @@ int returnSpeed(int loc)
         }
     }
     return speed;
+}
+
+void GameObject::updatePosEnemy(int map[40][80])
+{
+    int tempy = (ypos+8)/16;
+    int tempx = (xpos+0.5)/16;
+    int loc = map[tempy][tempx];
+    int hop = returnSpeed(loc);
+
+    int rnd = rand()%4;
+    
+    switch(rnd)
+        {
+            case 0:
+                if (!checkCollision(xpos,ypos-hop, map))
+                {
+                    ypos -= hop;
+                    facing = 0;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if (!checkCollision(xpos,ypos-temp_hop, map))
+                        {
+                            ypos -= temp_hop;
+                            facing = 0;
+                        }
+                        temp_hop--;
+                    }
+                }
+                break;
+            case 2:
+                if (!checkCollision(xpos,ypos+hop, map))
+                {
+                    ypos += hop;
+                    facing = 2;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if (!checkCollision(xpos,ypos+temp_hop, map))
+                        {
+                            ypos += temp_hop;
+                            facing = 2;
+                        }
+                        temp_hop--;
+                    }
+                }
+                break;
+            case 3:
+                if(!checkCollision(xpos-hop,ypos, map))
+                {
+                    xpos -= hop;
+                    facing = 3;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if(!checkCollision(xpos-temp_hop,ypos, map))
+                        {
+                            xpos -= temp_hop;
+                            facing = 3;
+                        }
+                        temp_hop--;
+                    }
+                }
+                break;
+            case 1:
+                if(!checkCollision(xpos+hop,ypos, map))
+                {
+                    xpos += hop;
+                    facing = 1;
+                }
+                else{
+                    int temp_hop = hop-1;
+                    while(temp_hop>0)
+                    {
+                        if(!checkCollision(xpos+temp_hop,ypos, map))
+                        {
+                            xpos += temp_hop;
+                            facing = 1;
+                        }
+                        temp_hop--;
+                    }
+                }
+                break;
+        }
+    frames++;
+    if(xpos <0)
+        xpos = 0;
+    if(ypos <0)
+        ypos = 0;
+    if(xpos > globals::SCREEN_WIDTH - destRect.w)
+        xpos = globals::SCREEN_WIDTH - destRect.w;
+    if(ypos > globals::SCREEN_HEIGHT - destRect.h)
+        ypos = globals::SCREEN_HEIGHT - destRect.h;
 }
 
 void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
@@ -246,10 +356,13 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80])
 void GameObject::render()
 {
     SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
-    TextureManager::drawProgressBar(energyTex, dstRect_Energy);
-    TextureManager::drawProgressBar(socialQuotientTex, dstRect_SocialQuotient);
-    TextureManager::drawProgressBar(fitnessTex, dstRect_Fitness);
-    TextureManager::drawProgressBar(nerdinessTex, dstRect_Nerdiness);
+    if(!isEnemy)
+    {
+        TextureManager::drawProgressBar(energyTex, dstRect_Energy);
+        TextureManager::drawProgressBar(socialQuotientTex, dstRect_SocialQuotient);
+        TextureManager::drawProgressBar(fitnessTex, dstRect_Fitness);
+        TextureManager::drawProgressBar(nerdinessTex, dstRect_Nerdiness);
+    }
 }
 
 bool check(int loc)
