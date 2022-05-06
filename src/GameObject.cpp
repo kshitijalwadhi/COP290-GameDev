@@ -392,6 +392,9 @@ void GameObject::render()
     SDL_DestroyTexture(moneyTex);
     SDL_DestroyTexture(energyLabelTex);
     SDL_DestroyTexture(moneyLabelTex);
+    SDL_DestroyTexture(socialQuotientLabelTex);
+    SDL_DestroyTexture(fitnessLabelTex);
+    SDL_DestroyTexture(nerdinessLabelTex);
 }
 
 bool check(int loc)

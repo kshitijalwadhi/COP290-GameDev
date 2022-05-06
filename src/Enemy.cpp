@@ -61,6 +61,7 @@ void Enemy::update()
     {
         srcRect = spriteRects_L[idx];
     }
+    frames = frames%3;
 
     destRect.x = xpos;
     destRect.y = ypos;
@@ -73,6 +74,8 @@ int returnEnemySpeed(int loc, int enemyDamper)
     int speed = 0;
     if(enemyDamper%globals::speedDampingFactor != 0)
         return speed;
+    else
+        enemyDamper = 0;
     for(int i=0; i<globals::ROAD_IDX.size();i++)
     {
         if(loc == globals::ROAD_IDX[i])
