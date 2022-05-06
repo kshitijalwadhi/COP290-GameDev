@@ -1,13 +1,14 @@
 #include "game.h"
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "Enemy.h"
 #include "Map.h"
 #include "Menu.h"
 
 GameObject* player1;
 GameObject* player2;
 
-std::vector<GameObject*> enemies;
+std::vector<Enemy*> enemies;
 
 Map* map;
 
@@ -124,7 +125,8 @@ void Game::enemySpawnHelper()
     int rnd = rand()%globals::enemySpawnRate;
     if (rnd==0){
         std::pair<int,int> spawnLoc = map->validPos();
-        GameObject* temp = new GameObject("../assets/sprites/characters.png", spawnLoc.first*16, spawnLoc.second*16, 1, 7, startTime, true);
+        //GameObject* temp = new GameObject("../assets/sprites/characters.png", spawnLoc.first*16, spawnLoc.second*16, 1, 7, startTime, true);
+        Enemy* temp = new Enemy("../assets/sprites/characters.png", spawnLoc.first*16, spawnLoc.second*16, 7, startTime);
         enemies.push_back(temp);
         numEnemies++;
     }
