@@ -166,7 +166,6 @@ bool GameObject::checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, i
     }
     if(intersect)
     {
-        std::cout<<"Type: "<< type << " Capacity: " << capacity << std::endl;
         int actualCap;
         if(capacity == 1)
             actualCap = 100;

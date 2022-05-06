@@ -22,6 +22,8 @@ SDL_Renderer* Game::renderer = nullptr;
 
 Mix_Music *gMenuMusic = NULL;
 
+Uint32 lastSpawn=0;
+
 Game::Game()
 {
     isRunning = false;
@@ -93,16 +95,10 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         player1 = new GameObject("../assets/sprites/characters.png", 128, 48, 1, 1, startTime);
         player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime);
 
-        std::pair<int,int> valSpawn = map->validPos();
-        int potion_type = 1;
-        int capacity = 1;
-        temp = new Spawnable("../assets/collectibles/potions-tileset.png",valSpawn.first*16, valSpawn.second*16, potion_type, capacity);
-        temp->potion_type = potion_type;
-        temp->capacity = capacity;
-        spawnables.push_back(temp);
         menu = new Menu();
         startTime = 0;
         numEnemies = 0;
+        numSpawnables = 0;
     }
     else{
         isRunning = false;
@@ -131,6 +127,22 @@ void Game::handleEvents()
     }
 }
 
+void Game::spawnableSpawnHelper()
+{
+    if(SDL_GetTicks() - lastSpawn > globals::spawnDelay)
+    {
+        std::pair<int,int> valSpawn = map->validPos();
+        int potion_type = rand() % 4;
+        int capacity = rand()%3 + 1;
+        temp = new Spawnable("../assets/collectibles/potions-tileset.png",valSpawn.first*16, valSpawn.second*16, potion_type, capacity);
+        temp->potion_type = potion_type;
+        temp->capacity = capacity;
+        spawnables.push_back(temp);
+        lastSpawn = SDL_GetTicks();
+        numSpawnables++;
+    }
+}
+
 void Game::enemySpawnHelper()
 {
     int rnd = rand()%globals::enemySpawnRate;
@@ -151,8 +163,6 @@ void Game::checkSpawnableIntersection()
         intersect_2 = false;
         int xpos_spawn = spawnables[i]->getX();
         int ypos_spawn = spawnables[i]->getY();
-        // std::cout<<"Potion type: "<<spawnables[i]->getPotionType()<<std::endl;
-        // std::cout<<"Capacity: "<<spawnables[i]->getCapacity()<<std::endl;
         intersect_1 = player1->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
         intersect_2 = player2->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
         if(intersect_1 || intersect_2)
@@ -160,6 +170,7 @@ void Game::checkSpawnableIntersection()
             spawnables[i]->~Spawnable();
             spawnables.erase(spawnables.begin()+i);
             i--;
+            numSpawnables--;
         }
     }
 }
@@ -171,6 +182,9 @@ void Game::update()
     player2->update(map->map_mat);
     if(numEnemies<globals::maxEnemies){
         enemySpawnHelper();
+    }
+    if(numSpawnables<globals::maxSpawnables){
+        spawnableSpawnHelper();
     }
     for(auto enemy : enemies)
     {

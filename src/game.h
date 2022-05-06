@@ -38,7 +38,7 @@ class Game{
         bool isRunning;
         bool isMenuScreen;
         bool bgMusicPlaying;
-        int numEnemies;
+        int numEnemies, numSpawnables;
         SDL_Window* window;
 };
 
