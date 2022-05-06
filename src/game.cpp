@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "GameObject.h"
 #include "Enemy.h"
+#include "Spawnable.h"
 #include "Map.h"
 #include "Menu.h"
 
@@ -9,6 +10,8 @@ GameObject* player1;
 GameObject* player2;
 
 std::vector<Enemy*> enemies;
+
+Spawnable* spawnable;
 
 Map* map;
 
@@ -89,6 +92,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         player1 = new GameObject("../assets/sprites/characters.png", 128, 48, 1, 1, startTime);
         player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime);
 
+        std::pair<int,int> valSpawn = map->validPos();
+        spawnable = new Spawnable("../assets/collectibles/potions-tileset.png",valSpawn.first*16, valSpawn.second*16, 1,1);
+
         menu = new Menu();
         startTime = 0;
         numEnemies = 0;
@@ -125,7 +131,6 @@ void Game::enemySpawnHelper()
     int rnd = rand()%globals::enemySpawnRate;
     if (rnd==0){
         std::pair<int,int> spawnLoc = map->validPos();
-        //GameObject* temp = new GameObject("../assets/sprites/characters.png", spawnLoc.first*16, spawnLoc.second*16, 1, 7, startTime, true);
         Enemy* temp = new Enemy("../assets/sprites/characters.png", spawnLoc.first*16, spawnLoc.second*16, 7, startTime);
         enemies.push_back(temp);
         numEnemies++;
@@ -154,6 +159,7 @@ void Game::render()
     map->drawMap();
     player1->render();
     player2->render();
+    spawnable->render();
     for(auto enemy : enemies)
     {
         enemy->render();

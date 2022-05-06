@@ -11,6 +11,7 @@ namespace globals {
     const int frameDelay = 1000 / FPS;
 
 	const float SPRITE_SCALE = 1.0f;
+	const float SPAWNABLE_SCALE = 1.0f;
 
 	const int TREE_SPEED = 1;
 	const int GRASS_SPEED = 2;
