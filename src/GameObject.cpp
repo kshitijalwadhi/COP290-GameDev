@@ -14,6 +14,8 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
     character_type = character_type;
     startTime = startTime;
 
+    lastEnemyInteraction = 0;
+
     money = 1000;
 
     objTexture = TextureManager::loadTexture(textureSheet);
@@ -219,6 +221,32 @@ bool GameObject::checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, i
         }
     }
     return intersect;
+}
+
+void GameObject::checkAndHandleEnemyIntersection(int x_enemy, int y_enemy)
+{
+    int x_enemy_centre = x_enemy + 8;
+    int y_enemy_centre = y_enemy + 8;
+    if(xpos<=x_enemy_centre && x_enemy_centre<=xpos+16 && ypos<=y_enemy_centre && y_enemy_centre<=ypos+16)
+    {
+        if(SDL_GetTicks() - lastEnemyInteraction < globals::enemyInteractionBuffer)
+        {
+            lastEnemyInteraction = SDL_GetTicks();
+        }
+        else{
+            energy -= globals::enemyInteractionEnergyDecrease;
+            if(energy < 0)
+            {
+                energy = 0;
+            }
+            nerdiness += globals::enemyInteractionNerdinessIncrease;
+            if(nerdiness > 100)
+            {
+                nerdiness = 100;
+            }
+            lastEnemyInteraction = SDL_GetTicks();
+        }
+    }
 }
 
 int returnSpeed(int loc)

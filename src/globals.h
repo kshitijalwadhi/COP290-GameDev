@@ -50,6 +50,11 @@ namespace globals {
 	const int enemySpeed_ROAD = 2;
 	const int enemySpeed_GRASS = 1;
 	const int enemySpeed_TREE = 1;
+
+	const int enemyInteractionEnergyDecrease = 10;
+	const int enemyInteractionNerdinessIncrease = 10;
+
+	const int enemyInteractionBuffer = 5000;
 }
 
 #endif

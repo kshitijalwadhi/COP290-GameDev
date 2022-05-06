@@ -20,6 +20,8 @@ class GameObject{
         void updateAttrs(int map[40][80]);
 
         bool checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, int type, int capacity);
+
+        void checkAndHandleEnemyIntersection(int x_enemy, int y_enemy);
     private:
         int xpos, ypos;
         
@@ -29,6 +31,8 @@ class GameObject{
         int facing; // 0: up, 1: right, 2: down, 3: left
         int frames;
         Uint32 startTime;
+
+        Uint32 lastEnemyInteraction;
 
         float energy;
         float socialQuotient;

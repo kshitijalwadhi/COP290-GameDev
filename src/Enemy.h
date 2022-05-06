@@ -12,6 +12,9 @@ class Enemy{
         void update();
 
         void updatePosEnemy(int map[40][80]);
+
+        int getX();
+        int getY();
         
     private:
         int xpos, ypos;

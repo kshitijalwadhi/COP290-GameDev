@@ -175,6 +175,17 @@ void Game::checkSpawnableIntersection()
     }
 }
 
+void Game::checkEnemyInteraction()
+{
+    for(int i=0; i<enemies.size(); i++)
+    {
+        int xpos_enemy = enemies[i]->getX();
+        int ypos_enemy = enemies[i]->getY();
+        player1->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
+        player2->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
+    }
+}
+
 void Game::update()
 {
     // handle game logic here
@@ -192,6 +203,7 @@ void Game::update()
         enemy->updatePosEnemy(map->map_mat);
     }
     checkSpawnableIntersection();
+    checkEnemyInteraction();
 }
 
 void Game::render()

@@ -42,6 +42,16 @@ Enemy::~Enemy()
     SDL_DestroyTexture(objTexture);
 }
 
+int Enemy::getX()
+{
+    return xpos;
+}
+
+int Enemy::getY()
+{
+    return ypos;
+}
+
 void Enemy::update()
 {
     int idx = frames % 3;

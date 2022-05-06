@@ -27,6 +27,7 @@ class Game{
         void spawnableSpawnHelper();
 
         void checkSpawnableIntersection();
+        void checkEnemyInteraction();
 
         bool running() { return isRunning; }
         bool onMenu() {return isMenuScreen;}
