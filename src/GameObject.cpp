@@ -253,173 +253,175 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80],
 
     if(player_idx == 1)
     {
-        switch(event.key.keysym.sym)
+        if(state[SDL_SCANCODE_W])
         {
-            case SDLK_w:
-                if (!checkCollision(xpos,ypos-hop, map))
+            if (!checkCollision(xpos,ypos-hop, map))
+            {
+                ypos -= hop;
+                facing = 0;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    ypos -= hop;
-                    facing = 0;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos,ypos-temp_hop, map))
                     {
-                        if (!checkCollision(xpos,ypos-temp_hop, map))
-                        {
-                            ypos -= temp_hop;
-                            facing = 0;
-                        }
-                        temp_hop--;
+                        ypos -= temp_hop;
+                        facing = 0;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
-            case SDLK_s:
-                if (!checkCollision(xpos,ypos+hop, map))
+            }
+            frames++;
+        }
+        if(state[SDL_SCANCODE_S])
+        {
+            if (!checkCollision(xpos,ypos+hop, map))
+            {
+                ypos += hop;
+                facing = 2;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    ypos += hop;
-                    facing = 2;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos,ypos+temp_hop, map))
                     {
-                        if (!checkCollision(xpos,ypos+temp_hop, map))
-                        {
-                            ypos += temp_hop;
-                            facing = 2;
-                        }
-                        temp_hop--;
+                        ypos += temp_hop;
+                        facing = 2;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
-            case SDLK_a:
-                if(!checkCollision(xpos-hop,ypos, map))
+            }
+            frames++;
+        }
+        if(state[SDL_SCANCODE_A])
+        {
+            if (!checkCollision(xpos-hop,ypos, map))
+            {
+                xpos -= hop;
+                facing = 3;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    xpos -= hop;
-                    facing = 3;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos-temp_hop,ypos, map))
                     {
-                        if(!checkCollision(xpos-temp_hop,ypos, map))
-                        {
-                            xpos -= temp_hop;
-                            facing = 3;
-                        }
-                        temp_hop--;
+                        xpos -= temp_hop;
+                        facing = 3;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
-            case SDLK_d:
-                if(!checkCollision(xpos+hop,ypos, map))
+            }
+            frames++;
+        }
+        if(state[SDL_SCANCODE_D])
+        {
+            if (!checkCollision(xpos+hop,ypos, map))
+            {
+                xpos += hop;
+                facing = 1;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    xpos += hop;
-                    facing = 1;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos+temp_hop,ypos, map))
                     {
-                        if(!checkCollision(xpos+temp_hop,ypos, map))
-                        {
-                            xpos += temp_hop;
-                            facing = 1;
-                        }
-                        temp_hop--;
+                        xpos += temp_hop;
+                        facing = 1;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
+            }
+            frames++;
         }
     }
     else{
-        switch(event.key.keysym.sym)
+        if(state[SDL_SCANCODE_UP])
         {
-            case SDLK_UP:
-                if (!checkCollision(xpos,ypos-hop, map))
+            if (!checkCollision(xpos,ypos-hop, map))
+            {
+                ypos -= hop;
+                facing = 0;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    ypos -= hop;
-                    facing = 0;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos,ypos-temp_hop, map))
                     {
-                        if (!checkCollision(xpos,ypos-temp_hop, map))
-                        {
-                            ypos -= temp_hop;
-                            facing = 0;
-                        }
-                        temp_hop--;
+                        ypos -= temp_hop;
+                        facing = 0;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
-            case SDLK_DOWN:
-                if (!checkCollision(xpos,ypos+hop, map))
+            }
+            frames++;
+        }
+        if(state[SDL_SCANCODE_DOWN])
+        {
+            if (!checkCollision(xpos,ypos+hop, map))
+            {
+                ypos += hop;
+                facing = 2;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    ypos += hop;
-                    facing = 2;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos,ypos+temp_hop, map))
                     {
-                        if (!checkCollision(xpos,ypos+temp_hop, map))
-                        {
-                            ypos += temp_hop;
-                            facing = 2;
-                        }
-                        temp_hop--;
+                        ypos += temp_hop;
+                        facing = 2;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
-            case SDLK_LEFT:
-                if(!checkCollision(xpos-hop,ypos, map))
+            }
+            frames++;
+        }
+        if(state[SDL_SCANCODE_LEFT])
+        {
+            if (!checkCollision(xpos-hop,ypos, map))
+            {
+                xpos -= hop;
+                facing = 3;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    xpos -= hop;
-                    facing = 3;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos-temp_hop,ypos, map))
                     {
-                        if(!checkCollision(xpos-temp_hop,ypos, map))
-                        {
-                            xpos -= temp_hop;
-                            facing = 3;
-                        }
-                        temp_hop--;
+                        xpos -= temp_hop;
+                        facing = 3;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
-            case SDLK_RIGHT:
-                if(!checkCollision(xpos+hop,ypos, map))
+            }
+            frames++;
+        }
+        if(state[SDL_SCANCODE_RIGHT])
+        {
+            if (!checkCollision(xpos+hop,ypos, map))
+            {
+                xpos += hop;
+                facing = 1;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
                 {
-                    xpos += hop;
-                    facing = 1;
-                }
-                else{
-                    int temp_hop = hop-1;
-                    while(temp_hop>0)
+                    if (!checkCollision(xpos+temp_hop,ypos, map))
                     {
-                        if(!checkCollision(xpos+temp_hop,ypos, map))
-                        {
-                            xpos += temp_hop;
-                            facing = 1;
-                        }
-                        temp_hop--;
+                        xpos += temp_hop;
+                        facing = 1;
                     }
+                    temp_hop--;
                 }
-                frames++;
-                break;
+            }
+            frames++;
         }
     }
     if(xpos <0)
