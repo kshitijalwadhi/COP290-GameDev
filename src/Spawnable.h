@@ -13,10 +13,10 @@ class Spawnable{
         int getY();
         int getPotionType();
         int getCapacity();
-    private:
-        int xpos, ypos;
         int potion_type;
         int capacity;
+    private:
+        int xpos, ypos;
         SDL_Texture* objTexture;
         SDL_Rect srcRect, destRect;
 };

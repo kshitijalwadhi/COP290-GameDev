@@ -24,6 +24,7 @@ class Game{
         void renderMenu();
 
         void enemySpawnHelper();
+        void spawnableSpawnHelper();
 
         void checkSpawnableIntersection();
 

@@ -164,6 +164,61 @@ bool GameObject::checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, i
     {
         intersect = true;
     }
+    if(intersect)
+    {
+        std::cout<<"Type: "<< type << " Capacity: " << capacity << std::endl;
+        int actualCap;
+        if(capacity == 1)
+            actualCap = 100;
+        else if(capacity == 2)
+            actualCap = 50;
+        else if(capacity == 3)
+            actualCap = 25;
+        if(type == 0)
+        {
+            if(energy < 100)
+            {
+                energy += actualCap;
+                if(energy > 100)
+                {
+                    energy = 100;
+                }
+            }
+        }
+        else if(type == 1)
+        {
+            if(socialQuotient < 100)
+            {
+                socialQuotient += actualCap;
+                if(socialQuotient > 100)
+                {
+                    socialQuotient = 100;
+                }
+            }
+        }
+        else if(type == 2)
+        {
+            if(fitness < 100)
+            {
+                fitness += actualCap;
+                if(fitness > 100)
+                {
+                    fitness = 100;
+                }
+            }
+        }
+        else if(type == 3)
+        {
+            if(nerdiness < 100)
+            {
+                nerdiness += actualCap;
+                if(nerdiness > 100)
+                {
+                    nerdiness = 100;
+                }
+            }
+        }
+    }
     return intersect;
 }
 
