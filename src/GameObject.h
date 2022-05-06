@@ -9,9 +9,11 @@ class GameObject{
         ~GameObject();
 
         void render();
-        void update();
+        void update(int map[40][80]);
 
         void updatePos(SDL_Event event, const Uint8 *state, int map[40][80], int player_idx);
+
+        void updateAttrs(int map[40][80]);
         
     private:
         int xpos, ypos;

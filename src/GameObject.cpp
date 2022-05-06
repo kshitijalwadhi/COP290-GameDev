@@ -107,7 +107,7 @@ GameObject::~GameObject()
     SDL_DestroyTexture(moneyLabelTex);
 }
 
-void GameObject::update()
+void GameObject::update(int map[40][80])
 {
     int idx = frames % 3;
     if(facing == 0)
@@ -132,7 +132,8 @@ void GameObject::update()
     destRect.w = srcRect.w*globals::SPRITE_SCALE;
     destRect.h = srcRect.h*globals::SPRITE_SCALE;
 
-    energy -= globals::frameDelay * globals::energyDecay;
+    //energy -= globals::frameDelay * globals::energyDecay;
+    updateAttrs(map);
 
     energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
     socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
@@ -453,4 +454,82 @@ bool GameObject::checkCollision(int x, int y, int map[40][80])
     flag3 = check(loc);
 
     return flag0 || flag1 || flag2 || flag3;
+}
+
+/*
+0: Rest
+1: Hostel
+2: Food
+3: SAC
+4: Study
+*/
+int getPosn(int x, int y, int map[40][80])
+{
+    int tempy, tempx, loc;
+    tempy = (y+8)/16;
+    tempx = (x+0.5)/16;
+    loc = map[tempy][tempx];
+    
+    for(auto idx:globals::HOSTEL_IDX)
+    {
+        if(loc == idx)
+            return 1;
+    }
+
+    for(auto idx:globals::FOOD_IDX)
+    {
+        if(loc == idx)
+            return 2;
+    }
+
+    for(auto idx:globals::SAC_IDX)
+    {
+        if(loc == idx)
+            return 3;
+    }
+
+    for(auto idx:globals::STUDY_IDX)
+    {
+        if(loc == idx)
+            return 4;
+    }
+
+    return 0;
+}
+
+void GameObject::updateAttrs(int map[40][80])
+{
+    int tempy = (ypos+8)/16;
+    int tempx = (xpos+0.5)/16;
+    int loc = getPosn(tempx, tempy, map);
+
+    energy -= globals::frameDelay * globals::energyDecay;
+    socialQuotient -= globals::frameDelay * globals::socialQuotientDecay;
+    fitness -= globals::frameDelay * globals::fitnessDecay;
+    nerdiness -= globals::frameDelay * globals::nerdinessDecay;
+    if(energy < 0)
+        energy = 0;
+    if(socialQuotient < 0)
+        socialQuotient = 0;
+    if(fitness < 0)
+        fitness = 0;
+    if(nerdiness < 0)
+        nerdiness = 0;
+
+    if(loc == 1)
+    {
+        energy += globals::frameDelay * globals::energyGain;
+    }
+    else if(loc == 2)
+    {
+        energy += globals::frameDelay * globals::energyGain;
+    }
+    else if(loc == 3)
+    {
+        socialQuotient += globals::frameDelay * globals::socialQuotientGain;
+    }
+    else if(loc == 4)
+    {
+        nerdiness += globals::frameDelay * globals::nerdinessGain;
+    }
 }

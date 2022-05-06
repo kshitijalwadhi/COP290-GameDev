@@ -135,8 +135,8 @@ void Game::enemySpawnHelper()
 void Game::update()
 {
     // handle game logic here
-    player1->update();
-    player2->update();
+    player1->update(map->map_mat);
+    player2->update(map->map_mat);
     if(numEnemies<globals::maxEnemies){
         enemySpawnHelper();
     }
