@@ -89,6 +89,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
         isRunning = true;
         isMenuScreen = true;
+        isMultiplayer = false;
 
         map = new Map();
 
@@ -242,11 +243,16 @@ void Game::handleMenuEvents()
             {
                 case 1:
                     isMenuScreen = false;
+                    isMultiplayer = false;
                     break;
                 case 2:
-                    isRunning = false;
+                    isMenuScreen = false;
+                    isMultiplayer = true;
                     break;
                 case 3:
+                    isRunning = false;
+                    break;
+                case 4:
                     {
                         if(bgMusicPlaying)
                         {

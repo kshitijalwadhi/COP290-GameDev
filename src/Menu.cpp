@@ -7,15 +7,20 @@ SDL_Color buttonTextColor = {255, 255, 255};
 
 Menu::Menu()
 {
-    dstRect_Play.x = globals::SCREEN_WIDTH/2 - 50;
-    dstRect_Play.y = globals::SCREEN_HEIGHT/2 - 200;
-    dstRect_Play.w = 100;
-    dstRect_Play.h = 100;
+    dstRect_PlaySingle.x = globals::SCREEN_WIDTH/2 - 50;
+    dstRect_PlaySingle.y = globals::SCREEN_HEIGHT/2 - 250;
+    dstRect_PlaySingle.w = 100;
+    dstRect_PlaySingle.h = 75;
 
-    dstRect_Exit.x = globals::SCREEN_WIDTH/2 - 50;
+    dstRect_PlayMulti.x = globals::SCREEN_WIDTH/2 - 50;
+    dstRect_PlayMulti.y = globals::SCREEN_HEIGHT/2 - 150;
+    dstRect_PlayMulti.w = 100;
+    dstRect_PlayMulti.h = 75;
+
+    dstRect_Exit.x = globals::SCREEN_WIDTH/2 - 25;
     dstRect_Exit.y = globals::SCREEN_HEIGHT/2 - 50;
-    dstRect_Exit.w = 100;
-    dstRect_Exit.h = 100;
+    dstRect_Exit.w = 50;
+    dstRect_Exit.h = 50;
 
     dstRect_Music.x = globals::SCREEN_WIDTH - 100;
     dstRect_Music.y = 100;
@@ -30,17 +35,21 @@ void Menu::render()
     TextureManager::drawBG(bg_tex);
     SDL_DestroyTexture(bg_tex);
 
-    SDL_Texture* button1_texture = TextureManager::loadTextureFromText("Play",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
-    TextureManager::drawText(button1_texture,dstRect_Play);
+    SDL_Texture* button1_texture = TextureManager::loadTextureFromText("Single Player",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
+    TextureManager::drawText(button1_texture,dstRect_PlaySingle);
     SDL_DestroyTexture(button1_texture);
 
-    SDL_Texture* button2_texture = TextureManager::loadTextureFromText("Exit",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
-    TextureManager::drawText(button2_texture,dstRect_Exit);
-    SDL_DestroyTexture(button2_texture);
+    SDL_Texture* button2_texture = TextureManager::loadTextureFromText("Multi Player",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
+    TextureManager::drawText(button2_texture,dstRect_PlayMulti);
+    SDL_DestroyTexture(button2_texture);    
 
-    SDL_Texture* button3_texture = TextureManager::loadTextureFromText("Toggle Music",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
-    TextureManager::drawText(button3_texture,dstRect_Music);
+    SDL_Texture* button3_texture = TextureManager::loadTextureFromText("Exit",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
+    TextureManager::drawText(button3_texture,dstRect_Exit);
     SDL_DestroyTexture(button3_texture);
+
+    SDL_Texture* button4_texture = TextureManager::loadTextureFromText("Music",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
+    TextureManager::drawText(button4_texture,dstRect_Music);
+    SDL_DestroyTexture(button4_texture);
 }
 
 void Menu::update()
@@ -62,17 +71,21 @@ int Menu::handleClick(SDL_Event event)
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-    if(checkInside(x, y, dstRect_Play))
+    if(checkInside(x, y, dstRect_PlaySingle))
     {
         return 1;
     }
-    else if(checkInside(x, y, dstRect_Exit))
+    else if(checkInside(x, y, dstRect_PlayMulti))
     {
         return 2;
     }
-    else if(checkInside(x, y, dstRect_Music))
+    else if(checkInside(x, y, dstRect_Exit))
     {
         return 3;
+    }
+    else if(checkInside(x, y, dstRect_Music))
+    {
+        return 4;
     }
     return 0;
 }
