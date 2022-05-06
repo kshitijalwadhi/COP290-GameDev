@@ -92,8 +92,7 @@ std::pair<int,int> Map::validPos(){
         c = rand() % 80;
         loc = map_mat[r][c];
         if(checkValid(loc)){
-            std::cout<<"loc: "<<loc<<std::endl;
-            return std::make_pair(r,c);
+            return std::make_pair(c,r);
         }
     }
 }

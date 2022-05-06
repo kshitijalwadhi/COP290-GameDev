@@ -123,13 +123,9 @@ void Game::enemySpawnHelper()
 {
     int rnd = rand()%globals::enemySpawnRate;
     if (rnd==0){
-        //std::pair<int,int> spawnLoc = map->validPos();
-        std::vector<std::pair<int,int>> spawnLocs = {{19,16},{28,13},{40,11},{53,14},{67,7}};
-        std::cout<<"Spawning enemy at "<<spawnLocs[numEnemies].first<<" "<<spawnLocs[numEnemies].second<<std::endl;
-        GameObject* temp =  new GameObject("../assets/sprites/characters.png", spawnLocs[numEnemies].first*16, spawnLocs[numEnemies].second*16, 1, 7, startTime);
+        std::pair<int,int> spawnLoc = map->validPos();
+        GameObject* temp = new GameObject("../assets/sprites/characters.png", spawnLoc.first*16, spawnLoc.second*16, 1, 7, startTime);
         enemies.push_back(temp);
-        //temp->~GameObject();
-        // temp = NULL;
         numEnemies++;
     }
 }
@@ -212,14 +208,12 @@ void Game::handleMenuEvents()
 void Game::updateMenu()
 {
     menu->update();
-    //player->update();
 }
 
 void Game::renderMenu()
 {
     SDL_RenderClear(renderer);
     menu->render();
-    //player->render();
     SDL_RenderPresent(renderer);
 }
 
