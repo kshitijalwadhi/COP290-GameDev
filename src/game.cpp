@@ -119,8 +119,10 @@ void Game::handleEvents()
             break;
         
         case SDL_KEYDOWN:
-            player1->updatePos(event, state, map->map_mat,1);
-            player2->updatePos(event, state, map->map_mat,2);
+            {player1->updatePos(event, state, map->map_mat,1);
+            if(isMultiplayer)
+                player2->updatePos(event, state, map->map_mat,2);
+            }
             break;
         
         default:
@@ -165,7 +167,8 @@ void Game::checkSpawnableIntersection()
         int xpos_spawn = spawnables[i]->getX();
         int ypos_spawn = spawnables[i]->getY();
         intersect_1 = player1->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
-        intersect_2 = player2->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
+        if(isMultiplayer)
+            intersect_2 = player2->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
         if(intersect_1 || intersect_2)
         {
             spawnables[i]->~Spawnable();
@@ -183,7 +186,8 @@ void Game::checkEnemyInteraction()
         int xpos_enemy = enemies[i]->getX();
         int ypos_enemy = enemies[i]->getY();
         player1->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
-        player2->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
+        if(isMultiplayer)
+            player2->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
     }
 }
 
@@ -191,7 +195,8 @@ void Game::update()
 {
     // handle game logic here
     player1->update(map->map_mat);
-    player2->update(map->map_mat);
+    if(isMultiplayer)
+        player2->update(map->map_mat);
     if(numEnemies<globals::maxEnemies){
         enemySpawnHelper();
     }
@@ -213,7 +218,8 @@ void Game::render()
     // rendering done here
     map->drawMap();
     player1->render();
-    player2->render();
+    if(isMultiplayer)
+        player2->render();
     for(auto spawnable : spawnables)
     {
         spawnable->render();
