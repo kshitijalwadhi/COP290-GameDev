@@ -7,6 +7,8 @@
 GameObject* player1;
 GameObject* player2;
 
+std::vector<GameObject*> enemies;
+
 Map* map;
 
 Menu* menu;
@@ -84,10 +86,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         map = new Map();
 
         player1 = new GameObject("../assets/sprites/characters.png", 128, 48, 1, 1, startTime);
-        //player2 = new GameObject("../assets/sprites/characters.png", 200, 200, 2, 7);
+        player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime);
 
         menu = new Menu();
         startTime = 0;
+        numEnemies = 0;
     }
     else{
         isRunning = false;
@@ -116,11 +119,33 @@ void Game::handleEvents()
     }
 }
 
+void Game::enemySpawnHelper()
+{
+    int rnd = rand()%globals::enemySpawnRate;
+    if (rnd==0){
+        //std::pair<int,int> spawnLoc = map->validPos();
+        std::vector<std::pair<int,int>> spawnLocs = {{19,16},{28,13},{40,11},{53,14},{67,7}};
+        std::cout<<"Spawning enemy at "<<spawnLocs[numEnemies].first<<" "<<spawnLocs[numEnemies].second<<std::endl;
+        GameObject* temp =  new GameObject("../assets/sprites/characters.png", spawnLocs[numEnemies].first*16, spawnLocs[numEnemies].second*16, 1, 7, startTime);
+        enemies.push_back(temp);
+        //temp->~GameObject();
+        // temp = NULL;
+        numEnemies++;
+    }
+}
+
 void Game::update()
 {
     // handle game logic here
     player1->update();
-    //player2->update();
+    player2->update();
+    if(numEnemies<globals::maxEnemies){
+        enemySpawnHelper();
+    }
+    for(auto enemy : enemies)
+    {
+        enemy->update();
+    }
 }
 
 void Game::render()
@@ -129,7 +154,11 @@ void Game::render()
     // rendering done here
     map->drawMap();
     player1->render();
-    //player2->render();
+    player2->render();
+    for(auto enemy : enemies)
+    {
+        enemy->render();
+    }
     SDL_RenderPresent(renderer);
 }
 

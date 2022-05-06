@@ -68,6 +68,15 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
     spriteRects_U[2] = {st_x+32, st_y+48, 16, 16};
 }
 
+GameObject::~GameObject()
+{
+    SDL_DestroyTexture(objTexture);
+    SDL_DestroyTexture(energyTex);
+    SDL_DestroyTexture(socialQuotientTex);
+    SDL_DestroyTexture(fitnessTex);
+    SDL_DestroyTexture(nerdinessTex);
+}
+
 void GameObject::update()
 {
     int idx = frames % 3;

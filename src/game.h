@@ -23,6 +23,8 @@ class Game{
         void updateMenu();
         void renderMenu();
 
+        void enemySpawnHelper();
+
         bool running() { return isRunning; }
         bool onMenu() {return isMenuScreen;}
         static SDL_Renderer* renderer;
@@ -33,6 +35,7 @@ class Game{
         bool isRunning;
         bool isMenuScreen;
         bool bgMusicPlaying;
+        int numEnemies;
         SDL_Window* window;
 };
 

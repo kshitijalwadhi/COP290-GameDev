@@ -65,12 +65,12 @@ void Map::drawMap(){
 
 bool checkValid(int loc)
 {
-    bool collision = true;
+    bool valid = false;
     for(int i=0; i<globals::ROAD_IDX.size();i++)
     {
         if(loc == globals::ROAD_IDX[i])
         {
-            collision = false;
+            valid = true;
             break;
         }
     }
@@ -78,19 +78,11 @@ bool checkValid(int loc)
     {
         if(loc == globals::GRASS_IDX[i])
         {
-            collision = false;
+            valid = true;
             break;
         }
     }
-    for(int i=0; i<globals::TREE_IDX.size();i++)
-    {
-        if(loc == globals::TREE_IDX[i])
-        {
-            collision = false;
-            break;
-        }
-    }
-    return collision;
+    return valid;
 }
 
 std::pair<int,int> Map::validPos(){
@@ -99,7 +91,8 @@ std::pair<int,int> Map::validPos(){
         r = rand() % 40;
         c = rand() % 80;
         loc = map_mat[r][c];
-        if(!checkValid(loc)){
+        if(checkValid(loc)){
+            std::cout<<"loc: "<<loc<<std::endl;
             return std::make_pair(r,c);
         }
     }
