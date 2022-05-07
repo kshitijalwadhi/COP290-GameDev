@@ -1,0 +1,16 @@
+Local Gameplay:
+
+All aspects work. Can play as a single player as well as with two players using the same keyboard (WASD and arrow keys). 
+
+
+Online Gameplay:
+
+The sockets are working fine. The clients are able to communicate properly using the server. 
+However there is an issue that after some time the two clients go out of sync.
+This is because I am sending the keyboard commands through the server and long pressing of keys is leading to different inputs. 
+Another reason might be due to packet loss since I am testing on the same laptop using two terminal windows during hot summer days in Delhi.
+I have tried switching between SDL_Events and SDL_GetKeyboardStates but this didn't really help.
+There is another fix that I have tried where instead of sending the keyboard commands through the server, we send the location 
+of the sprite through it. There is a demerit to this though that we lose on the animation of sprite if we just switch using that. 
+There is a way around though, we can check the direction of movement and play the respective animation however this is not very elegant. 
+I am not really sure what's causing this issue but I'll continue debugging this in the coming few days.
