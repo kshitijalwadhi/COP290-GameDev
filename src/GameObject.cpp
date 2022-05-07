@@ -542,6 +542,14 @@ bool check(int loc)
             break;
         }
     }
+    for(auto pos: globals::GROUND_IDX)
+    {
+        if(loc == pos)
+        {
+            collision = false;
+            break;
+        }
+    }
     return collision;
 }
 

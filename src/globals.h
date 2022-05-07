@@ -21,14 +21,17 @@ namespace globals {
 	const int ROAD_SPEED = 4;
 	const int BUILDING_SPEED = 2;
 
-	const std::vector<int> GRASS_IDX = { 12, 13, 20, 21, 65, 66 };
+	const std::vector<int> GRASS_IDX = { 12, 13, 20, 21, 65, 66, 73 };
 	const std::vector<int> TREE_IDX = { 31, 39, 77, 78, 93 };
-	const std::vector<int> ROAD_IDX = { 11, 19 }; 
-	const std::vector<int> BUILDINGS_IDX = { 50, 89, 15, 9 };
-	const std::vector<int> STUDY_IDX = { 50 };
-	const std::vector<int> FOOD_IDX = { 89 };
-	const std::vector<int> HOSTEL_IDX = { 15 };
-	const std::vector<int> SAC_IDX = { 9 };
+	const std::vector<int> ROAD_IDX = { 15, 81, 82 }; 
+	const std::vector<int> BUILDINGS_IDX = { 30, 9, 18, 76, 17, 90, 11, 10, 83 };
+	const std::vector<int> STUDY_IDX = { 30, 9 };
+	const std::vector<int> FOOD_IDX = { 18 };
+	const std::vector<int> HOSTEL_IDX = { 76, 17, 90, 10, 83 };
+	const std::vector<int> SAC_IDX = { 11 };
+	const std::vector<int> GROUND_IDX = { 65, 25, 26, 27, 33, 34, 41, 42, 43};
+	const std::vector<int> HOSPITAL = { 10, 83 };
+
 
 	const float energyDecay = 0.0005;
 	const float socialQuotientDecay = 0.0005;
