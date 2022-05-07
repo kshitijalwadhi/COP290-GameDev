@@ -14,7 +14,7 @@ namespace globals {
 	const float SPAWNABLE_SCALE = 1.0f;
 
 	const int maxSpawnables = 5;
-	const int spawnRate = 1000;
+	const int spawnRate = 1500;
 
 	const int TREE_SPEED = 1;
 	const int GRASS_SPEED = 1;
@@ -32,21 +32,17 @@ namespace globals {
 	const std::vector<int> GROUND_IDX = { 65, 25, 26, 27, 33, 34, 41, 42, 43};
 	const std::vector<int> HOSPITAL = { 10, 83 };
 
-
-	const float energyDecay = 0.0005;
-	const float socialQuotientDecay = 0.0005;
-	const float fitnessDecay = 0.0005;
-	const float nerdinessDecay = 0.0005;
+	const float decayIncreaseRate = 0.0005;
 
 	const float energyGain = 0.002;
 	const float hostelFoodCost = 0.005;
 	const float outsideFoodCost = 0.01;
 
 	const float nerdinessGain = 0.002;
-	const float socialQuotientGain = 0.002;
+	const float socialQuotientGain = 0.006;
 	const float fitnessGain = 0.002;
 	
-	const int enemySpawnRate = 500;
+	const int enemySpawnRate = 3000;
 	const int maxEnemies = 5;
 	
 	const int speedDampingFactor = 4;

@@ -9,6 +9,10 @@ SDL_Color fitnessBarColor = {0, 0, 255};
 SDL_Color nerdinessBarColor = {255, 255, 0};
 
 const int labelSize = 16;
+float energyDecay;
+float socialQuotientDecay;
+float fitnessDecay;
+float nerdinessDecay;
 
 GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime)
 {
@@ -44,9 +48,14 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
     dstRect_EnergyLabel.h = dstRect_FitnessLabel.h = dstRect_NerdinessLabel.h = dstRect_SocialQuotientLabel.h = 10;
 
     energy = 80.0;
-    socialQuotient = 40.0;
+    socialQuotient = 60.0;
     fitness = 70.0;
     nerdiness = 90.0;
+
+    energyDecay = 0.0005;
+	socialQuotientDecay = 0.0005;
+	fitnessDecay = 0.0005;
+	nerdinessDecay = 0.0005;
 
     energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
     socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
@@ -720,10 +729,10 @@ void GameObject::updateAttrs(int map[40][80])
 {
     int loc = getPosn(xpos, ypos, map);
 
-    energy -= globals::frameDelay * globals::energyDecay;
-    socialQuotient -= globals::frameDelay * globals::socialQuotientDecay;
-    fitness -= globals::frameDelay * globals::fitnessDecay;
-    nerdiness -= globals::frameDelay * globals::nerdinessDecay;
+    energy -= globals::frameDelay * energyDecay;
+    socialQuotient -= globals::frameDelay * socialQuotientDecay;
+    fitness -= globals::frameDelay * fitnessDecay;
+    nerdiness -= globals::frameDelay * nerdinessDecay;
     if(energy < 0)
         energy = 0;
     if(socialQuotient < 0)
@@ -753,6 +762,11 @@ void GameObject::updateAttrs(int map[40][80])
     {
         fitness += globals::frameDelay * globals::fitnessGain;
     }
+
+    energyDecay += energyDecay * globals::decayIncreaseRate;
+    socialQuotientDecay += socialQuotientDecay * globals::decayIncreaseRate;
+    fitnessDecay += fitnessDecay * globals::decayIncreaseRate;
+    nerdinessDecay += nerdinessDecay * globals::decayIncreaseRate;
 }
 
 bool GameObject::isAlive(){
