@@ -24,11 +24,11 @@ Mix_Music *gMenuMusic = NULL;
 
 Uint32 lastSpawn=0;
 
-SDL_Rect statusRect = {39*16, 36*16, 25*16, 3*16};
+SDL_Rect statusRect = {750, 35*16, 350, 3*16};
 SDL_Texture* statusTexture = nullptr;
 std::string statusText = "";
 
-SDL_Rect dstRect_ToMenu = {globals::SCREEN_WIDTH - 50, 0, 50, 50};
+SDL_Rect dstRect_ToMenu = {685, 20, 50, 50};
 SDL_Texture* menuTex = nullptr;
 
 Game::Game()
@@ -283,11 +283,11 @@ void Game::render()
     }
     if(statusText != "")
     {
-        statusTexture = TextureManager::loadTextureFromText(statusText,"../assets/fonts/Raleway-Medium.ttf", 6, {255, 255, 255});
+        statusTexture = TextureManager::loadTextureFromText(statusText,"../assets/fonts/Raleway-Medium.ttf", 32, {255, 255, 255});
         TextureManager::drawText(statusTexture, statusRect);
         SDL_DestroyTexture(statusTexture);
     }
-    menuTex = TextureManager::loadTextureFromText("Menu","../assets/fonts/Raleway-Medium.ttf", 6, {255, 255, 255});
+    menuTex = TextureManager::loadTextureFromText("Menu","../assets/fonts/Raleway-Medium.ttf", 32, {255, 255, 255});
     TextureManager::drawText(menuTex, dstRect_ToMenu);
     SDL_DestroyTexture(menuTex);
     SDL_RenderPresent(renderer);

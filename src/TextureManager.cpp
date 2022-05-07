@@ -26,7 +26,9 @@ void TextureManager::drawBG(SDL_Texture* tex)
 SDL_Texture* TextureManager::loadTextureFromText(std::string text, const char* fontFile, int size, SDL_Color color)
 {
     TTF_Font* font = TTF_OpenFont(fontFile, size);
-    SDL_Surface* surf = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Color bgcol = {0,0,0};
+    //SDL_Surface* surf = TTF_RenderText_Shaded(font, text.c_str(), color, bgcol);
+    SDL_Surface* surf = TTF_RenderText_Blended(font, text.c_str(), color);
     if(surf == NULL)
     {
         printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());

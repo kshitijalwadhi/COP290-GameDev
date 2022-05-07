@@ -8,6 +8,8 @@ SDL_Color socialQuotientBarColor = {0, 255, 0};
 SDL_Color fitnessBarColor = {0, 0, 255};
 SDL_Color nerdinessBarColor = {255, 255, 0};
 
+const int labelSize = 16;
+
 GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, int character_type, Uint32 startTime)
 {
     player_idx = player_idx;
@@ -16,20 +18,18 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
 
     lastEnemyInteraction = 0;
 
-    money = 1000;
-
     objTexture = TextureManager::loadTexture(textureSheet);
 
     if(player_idx==1)
     {
-        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = dstRect_Money.x = 35*16;
-        dstRect_EnergyLabel.x = dstRect_FitnessLabel.x = dstRect_NerdinessLabel.x = dstRect_SocialQuotientLabel.x = dstRect_MoneyLabel.x = 30*16;
+        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = 37*16;
+        dstRect_EnergyLabel.x = dstRect_FitnessLabel.x = dstRect_NerdinessLabel.x = dstRect_SocialQuotientLabel.x = 33*16;
     }
     else{
-        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = dstRect_Money.x = 69*16;
-        dstRect_EnergyLabel.x = dstRect_FitnessLabel.x = dstRect_NerdinessLabel.x = dstRect_SocialQuotientLabel.x = dstRect_MoneyLabel.x = 64*16;
+        dstRect_Energy.x = dstRect_Fitness.x = dstRect_Nerdiness.x = dstRect_SocialQuotient.x = 73*16;
+        dstRect_EnergyLabel.x = dstRect_FitnessLabel.x = dstRect_NerdinessLabel.x = dstRect_SocialQuotientLabel.x = 69*16;
     }
-    dstRect_Energy.y = 31*16;
+    dstRect_Energy.y = 35*16;
     dstRect_Fitness.y = dstRect_Energy.y + 10;
     dstRect_Nerdiness.y = dstRect_Fitness.y + 10;
     dstRect_SocialQuotient.y = dstRect_Nerdiness.y + 10;
@@ -43,28 +43,20 @@ GameObject::GameObject(const char* textureSheet, int x, int y, int player_idx, i
     dstRect_EnergyLabel.w = dstRect_FitnessLabel.w = dstRect_NerdinessLabel.w = dstRect_SocialQuotientLabel.w = 50;
     dstRect_EnergyLabel.h = dstRect_FitnessLabel.h = dstRect_NerdinessLabel.h = dstRect_SocialQuotientLabel.h = 10;
 
-    dstRect_Money.y = dstRect_SocialQuotient.y + 15;
-    dstRect_Money.w = dstRect_MoneyLabel.w = 50;
-    dstRect_Money.h = dstRect_MoneyLabel.h = 10;
-    dstRect_MoneyLabel.y = dstRect_Money.y;
-
     energy = 80.0;
-    socialQuotient = 10.0;
-    fitness = 40.0;
-    nerdiness = 30.0;
+    socialQuotient = 40.0;
+    fitness = 70.0;
+    nerdiness = 90.0;
 
     energyTex = TextureManager::progressBar(energy, 100, bgColorBar, energyBarColor);
     socialQuotientTex = TextureManager::progressBar(socialQuotient, 100, bgColorBar, socialQuotientBarColor);
     fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
     nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
 
-    moneyTex = TextureManager::loadTextureFromText(std::to_string(money), "../assets/fonts/Raleway-Medium.ttf", 16, {255, 255, 255});
-
-    energyLabelTex = TextureManager::loadTextureFromText("Energy", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    socialQuotientLabelTex = TextureManager::loadTextureFromText("Social Quotient", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    fitnessLabelTex = TextureManager::loadTextureFromText("Fitness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    nerdinessLabelTex = TextureManager::loadTextureFromText("Nerdiness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    moneyLabelTex = TextureManager::loadTextureFromText("Money: $", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+    energyLabelTex = TextureManager::loadTextureFromText("Energy", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
+    socialQuotientLabelTex = TextureManager::loadTextureFromText("Social Quotient", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
+    fitnessLabelTex = TextureManager::loadTextureFromText("Fitness", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
+    nerdinessLabelTex = TextureManager::loadTextureFromText("Nerdiness", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
 
     xpos = x;
     ypos = y;
@@ -101,12 +93,10 @@ GameObject::~GameObject()
     SDL_DestroyTexture(socialQuotientTex);
     SDL_DestroyTexture(fitnessTex);
     SDL_DestroyTexture(nerdinessTex);
-    SDL_DestroyTexture(moneyTex);
     SDL_DestroyTexture(energyLabelTex);
     SDL_DestroyTexture(socialQuotientLabelTex);
     SDL_DestroyTexture(fitnessLabelTex);
     SDL_DestroyTexture(nerdinessLabelTex);
-    SDL_DestroyTexture(moneyLabelTex);
 }
 
 int GameObject::getX(){
@@ -149,12 +139,10 @@ void GameObject::update(int map[40][80])
     fitnessTex = TextureManager::progressBar(fitness, 100, bgColorBar, fitnessBarColor);
     nerdinessTex = TextureManager::progressBar(nerdiness, 100, bgColorBar, nerdinessBarColor);
 
-    moneyTex = TextureManager::loadTextureFromText(std::to_string(money), "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    energyLabelTex = TextureManager::loadTextureFromText("Energy", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    socialQuotientLabelTex = TextureManager::loadTextureFromText("Social Quotient", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    fitnessLabelTex = TextureManager::loadTextureFromText("Fitness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    nerdinessLabelTex = TextureManager::loadTextureFromText("Nerdiness", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
-    moneyLabelTex = TextureManager::loadTextureFromText("Money: $", "../assets/fonts/Raleway-Medium.ttf", 8, {255, 255, 255});
+    energyLabelTex = TextureManager::loadTextureFromText("Energy", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
+    socialQuotientLabelTex = TextureManager::loadTextureFromText("Social Quotient", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
+    fitnessLabelTex = TextureManager::loadTextureFromText("Fitness", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
+    nerdinessLabelTex = TextureManager::loadTextureFromText("Nerdiness", "../assets/fonts/Raleway-Medium.ttf", labelSize, {255, 255, 255});
 }
 
 bool GameObject::checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, int type, int capacity)
@@ -492,16 +480,12 @@ void GameObject::render()
     SDL_RenderCopy(Game::renderer, socialQuotientLabelTex, NULL, &dstRect_SocialQuotientLabel);
     SDL_RenderCopy(Game::renderer, fitnessLabelTex, NULL, &dstRect_FitnessLabel);
     SDL_RenderCopy(Game::renderer, nerdinessLabelTex, NULL, &dstRect_NerdinessLabel);
-    SDL_RenderCopy(Game::renderer, moneyLabelTex, NULL, &dstRect_MoneyLabel);
-    SDL_RenderCopy(Game::renderer, moneyTex, NULL, &dstRect_Money);
 
     SDL_DestroyTexture(energyTex);
     SDL_DestroyTexture(socialQuotientTex);
     SDL_DestroyTexture(fitnessTex);
     SDL_DestroyTexture(nerdinessTex);
-    SDL_DestroyTexture(moneyTex);
     SDL_DestroyTexture(energyLabelTex);
-    SDL_DestroyTexture(moneyLabelTex);
     SDL_DestroyTexture(socialQuotientLabelTex);
     SDL_DestroyTexture(fitnessLabelTex);
     SDL_DestroyTexture(nerdinessLabelTex);
