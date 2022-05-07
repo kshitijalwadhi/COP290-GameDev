@@ -7,7 +7,6 @@ Game *game = nullptr;
 int main(int argc, char* argv[]) {
     Uint32 frameStart;
     int frameTime;
-    srand(time(0));
     game = new Game();
 
     game->init("Flag Hunt", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, false);

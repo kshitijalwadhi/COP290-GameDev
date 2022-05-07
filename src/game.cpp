@@ -304,7 +304,8 @@ void Game::handleEvents()
 
 void Game::spawnableSpawnHelper()
 {
-    if(SDL_GetTicks() - lastSpawn > globals::spawnDelay)
+    int rnd = rand()%globals::enemySpawnRate;
+    if(rnd==0)
     {
         std::pair<int,int> valSpawn = map->validPos();
         int potion_type = rand() % 4;
@@ -547,11 +548,6 @@ void Game::handleMenuEvents()
                     spawnables.clear();
                     break;
                 case 2:
-                    player1->~GameObject();
-                    player2->~GameObject();
-                    map->~Map();
-                    isMultiplayer = true;
-
                     if(SDLNet_TCP_Send(server, start.c_str(), 6) < 6) {
                         std::cout << "Unable to send message to server! SDLNet Error: " << SDLNet_GetError() << "\n";
                         std::cout << "Only local play available!\n";
@@ -566,7 +562,7 @@ void Game::handleMenuEvents()
                                 if(SDLNet_SocketReady(server) != 0) {
                                     std::cout<<"socket ready"<<std::endl;
                                     if(SDLNet_TCP_Recv(server, msg, 1000) > 0) {
-                                        std::cout << msg << std::endl;
+                                        //std::cout << msg << std::endl;
                                         if(strcmp(msg, "QUIT") == 0) {
                                             onlinePossible = false;
                                             flag = false;
@@ -574,9 +570,10 @@ void Game::handleMenuEvents()
                                         }
                                         else {
                                             int SEED = getNumber(msg, 1000);
-                                            std::cout<<SEED<<std::endl;
+                                            //std::cout<<SEED<<std::endl;
                                             flag = false;
                                             //isConnected = true;
+                                            srand(SEED);
                                             break;
                                         }
                                     }
@@ -585,6 +582,10 @@ void Game::handleMenuEvents()
                         if (!flag)
                             break;
                     }
+                    player1->~GameObject();
+                    player2->~GameObject();
+                    map->~Map();
+                    isMultiplayer = true;
                     isMenuScreen = false;
                     map = new Map();
 

@@ -14,7 +14,7 @@ namespace globals {
 	const float SPAWNABLE_SCALE = 1.0f;
 
 	const int maxSpawnables = 5;
-	const int spawnDelay = 10000;
+	const int spawnRate = 1000;
 
 	const int TREE_SPEED = 1;
 	const int GRASS_SPEED = 1;
