@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     int frameTime;
     game = new Game();
 
-    game->init("Flag Hunt", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, false);
+    game->init("IITD Mazetries", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, false);
 
     while(game->running())
     {

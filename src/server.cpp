@@ -1,3 +1,8 @@
+/*
+Server code template referred from: https://github.com/ArnavT005/Maze_Engine/blob/main/PacmanPro/src/server.cpp
+All credits goes to the authors of this code
+*/
+
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_net.h>
