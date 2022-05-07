@@ -8,6 +8,8 @@
 #include <SDL2/SDL_net.h>
 #include <stdio.h>
 #include <iostream>
+#include <time.h>
+
 
 class Game{
     public:

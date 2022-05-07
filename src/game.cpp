@@ -548,12 +548,17 @@ void Game::handleMenuEvents()
                     spawnables.clear();
                     break;
                 case 2:
+                if(server!=NULL)
+                {
                     if(SDLNet_TCP_Send(server, start.c_str(), 6) < 6) {
                         std::cout << "Unable to send message to server! SDLNet Error: " << SDLNet_GetError() << "\n";
                         std::cout << "Only local play available!\n";
                         onlinePossible = false;
                 }
 
+                }
+                if(onlinePossible)
+                {
                     while(true)
                     {
                         bool flag = true;
@@ -582,6 +587,10 @@ void Game::handleMenuEvents()
                         if (!flag)
                             break;
                     }
+                }   
+                else{
+                    srand(time(0));
+                }
                     player1->~GameObject();
                     player2->~GameObject();
                     map->~Map();
