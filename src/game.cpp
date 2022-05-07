@@ -23,6 +23,7 @@ SDL_Renderer* Game::renderer = nullptr;
 Mix_Music *gMenuMusic = NULL;
 
 Uint32 lastSpawn=0;
+Uint32 lastStatusTime=0;
 
 SDL_Rect statusRect = {750, 35*16, 350, 3*16};
 SDL_Texture* statusTexture = nullptr;
@@ -189,6 +190,15 @@ void Game::checkSpawnableIntersection()
         intersect_1 = player1->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
         if(isMultiplayer)
             intersect_2 = player2->checkAndHandleSpawnableIntersection(xpos_spawn, ypos_spawn, spawnables[i]->getPotionType(), spawnables[i]->getCapacity());
+        if(intersect_1 && !intersect_2)
+            statusText = "P1 potion";
+        if(intersect_2 && !intersect_1)
+            statusText = "P2 potion";
+        if(intersect_1 && intersect_2)
+            statusText = "P1,P2 potion";
+
+        lastStatusTime = SDL_GetTicks();
+
         if(intersect_1 || intersect_2)
         {
             spawnables[i]->~Spawnable();
@@ -234,6 +244,11 @@ void Game::updateStatusText()
             statusText = "You lose!";
         
         gameOver = !player1->isAlive();
+    }
+    if(!gameOver && statusText!="")
+    {
+        if(SDL_GetTicks() - lastStatusTime > 5000)
+            statusText = "";
     }
 }
 
