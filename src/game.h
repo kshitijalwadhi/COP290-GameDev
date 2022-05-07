@@ -19,6 +19,8 @@ class Game{
         void render();
         void clean();
 
+        void updateStatusText();
+
         void handleMenuEvents();
         void updateMenu();
         void renderMenu();
@@ -41,6 +43,7 @@ class Game{
         bool bgMusicPlaying;
 
         bool isMultiplayer;
+        bool gameOver;
 
         int numEnemies, numSpawnables;
         SDL_Window* window;

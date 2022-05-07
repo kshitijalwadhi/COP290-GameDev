@@ -648,3 +648,10 @@ void GameObject::updateAttrs(int map[40][80])
         nerdiness += globals::frameDelay * globals::nerdinessGain;
     }
 }
+
+bool GameObject::isAlive(){
+    if(energy <= 0 || socialQuotient <= 0 || fitness <= 0 || nerdiness <= 0)
+        return false;
+    else
+        return true;
+}

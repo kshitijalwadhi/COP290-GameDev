@@ -24,6 +24,10 @@ Mix_Music *gMenuMusic = NULL;
 
 Uint32 lastSpawn=0;
 
+SDL_Rect statusRect = {39*16, 36*16, 25*16, 3*16};
+SDL_Texture* statusTexture = nullptr;
+std::string statusText = "";
+
 Game::Game()
 {
     isRunning = false;
@@ -100,6 +104,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         startTime = 0;
         numEnemies = 0;
         numSpawnables = 0;
+        gameOver = false;
     }
     else{
         isRunning = false;
@@ -191,25 +196,55 @@ void Game::checkEnemyInteraction()
     }
 }
 
+void Game::updateStatusText()
+{
+    if(isMultiplayer)
+    {
+        bool player1_alive;
+        bool player2_alive;
+        player1_alive = player1->isAlive();
+        player2_alive = player2->isAlive();
+
+        if(player1_alive && !player2_alive)
+            statusText = "Player 1 Wins!";
+        else if(!player1_alive && player2_alive)
+            statusText = "Player 2 Wins!";
+        else if(!player1_alive && !player2_alive)
+            statusText = "Draw!";
+        
+        gameOver = player1_alive & player2_alive;
+    }
+    else{
+        if(!player1->isAlive())
+            statusText = "You lose!";
+        
+        gameOver = !player1->isAlive();
+    }
+}
+
 void Game::update()
 {
     // handle game logic here
-    player1->update(map->map_mat);
-    if(isMultiplayer)
-        player2->update(map->map_mat);
-    if(numEnemies<globals::maxEnemies){
-        enemySpawnHelper();
-    }
-    if(numSpawnables<globals::maxSpawnables){
-        spawnableSpawnHelper();
-    }
-    for(auto enemy : enemies)
+    if(!gameOver)
     {
-        enemy->update();
-        enemy->updatePosEnemy(map->map_mat);
+        player1->update(map->map_mat);
+        if(isMultiplayer)
+            player2->update(map->map_mat);
+        if(numEnemies<globals::maxEnemies){
+            enemySpawnHelper();
+        }
+        if(numSpawnables<globals::maxSpawnables){
+            spawnableSpawnHelper();
+        }
+        for(auto enemy : enemies)
+        {
+            enemy->update();
+            enemy->updatePosEnemy(map->map_mat);
+        }
+        checkSpawnableIntersection();
+        checkEnemyInteraction();
     }
-    checkSpawnableIntersection();
-    checkEnemyInteraction();
+    updateStatusText();
 }
 
 void Game::render()
@@ -227,6 +262,12 @@ void Game::render()
     for(auto enemy : enemies)
     {
         enemy->render();
+    }
+    if(statusText != "")
+    {
+        statusTexture = TextureManager::loadTextureFromText(statusText,"../assets/fonts/Raleway-Medium.ttf", 6, {255, 255, 255});
+        TextureManager::drawText(statusTexture, statusRect);
+        SDL_DestroyTexture(statusTexture);
     }
     SDL_RenderPresent(renderer);
 }
