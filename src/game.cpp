@@ -136,13 +136,6 @@ void Game::handleEvents()
         case SDL_QUIT:
             isRunning = false;
             break;
-        
-        case SDL_KEYDOWN:
-            {player1->updatePos(event, state, map->map_mat,1);
-            if(isMultiplayer)
-                player2->updatePos(event, state, map->map_mat,2);
-            }
-            break;
         case SDL_MOUSEBUTTONDOWN:
             if(checkInsideRect(x, y, dstRect_ToMenu))
             {
@@ -151,6 +144,10 @@ void Game::handleEvents()
         default:
             break;
     }
+    player1->updatePos(event, state, map->map_mat,1);
+    if(isMultiplayer)
+        player2->updatePos(event, state, map->map_mat,2);
+            
 }
 
 void Game::spawnableSpawnHelper()

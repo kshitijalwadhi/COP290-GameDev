@@ -17,9 +17,9 @@ namespace globals {
 	const int spawnDelay = 10000;
 
 	const int TREE_SPEED = 1;
-	const int GRASS_SPEED = 2;
-	const int ROAD_SPEED = 4;
-	const int BUILDING_SPEED = 2;
+	const int GRASS_SPEED = 1;
+	const int ROAD_SPEED = 2;
+	const int BUILDING_SPEED = 1;
 
 	const std::vector<int> GRASS_IDX = { 12, 13, 20, 21, 65, 66, 73 };
 	const std::vector<int> TREE_IDX = { 31, 39, 77, 78, 93 };
