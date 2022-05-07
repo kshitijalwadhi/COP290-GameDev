@@ -1,6 +1,5 @@
 #include "game.h"
 #include "globals.h"
-#include <time.h>
 
 Game *game = nullptr;
 
