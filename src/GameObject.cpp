@@ -587,6 +587,7 @@ bool GameObject::checkCollision(int x, int y, int map[40][80])
 2: Food
 3: SAC
 4: Study
+5: Fitness
 */
 int getPosn(int x, int y, int map[40][80])
 {
@@ -617,6 +618,11 @@ int getPosn(int x, int y, int map[40][80])
     {
         if(loc == idx)
             return 4;
+    }
+    for(auto idx: globals::GROUND_IDX)
+    {
+        if(loc == idx)
+            return 5;
     }
 
     return 0;
@@ -654,6 +660,10 @@ void GameObject::updateAttrs(int map[40][80])
     else if(loc == 4)
     {
         nerdiness += globals::frameDelay * globals::nerdinessGain;
+    }
+    else if(loc == 5)
+    {
+        fitness += globals::frameDelay * globals::fitnessGain;
     }
 }
 
