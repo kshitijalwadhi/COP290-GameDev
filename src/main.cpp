@@ -7,8 +7,12 @@ int main(int argc, char* argv[]) {
     Uint32 frameStart;
     int frameTime;
     game = new Game();
+    bool fullscreen = false;
+    if(argc>1){
+        fullscreen = true;
+    }
 
-    game->init("IITD Mazetries", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, false);
+    game->init("IITD Mazetries", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, fullscreen);
 
     while(game->running())
     {
