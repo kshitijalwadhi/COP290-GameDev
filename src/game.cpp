@@ -211,13 +211,39 @@ void Game::checkSpawnableIntersection()
 
 void Game::checkEnemyInteraction()
 {
+    bool f1=false, f2 = false;
     for(int i=0; i<enemies.size(); i++)
     {
         int xpos_enemy = enemies[i]->getX();
         int ypos_enemy = enemies[i]->getY();
-        player1->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
+        f1 = player1->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
         if(isMultiplayer)
-            player2->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
+            f2 = player2->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
+    }
+    if(isMultiplayer)
+    {
+        if(f1 && !f2)
+        {
+            statusText = "P1 got Prof'd";
+            //lastStatusTime = SDL_GetTicks();
+        }
+        if(!f1 && f2)
+        {
+            statusText = "P2 got Prof'd";
+            //lastStatusTime = SDL_GetTicks();
+        }
+        if(f1 && f2)
+        {
+            statusText = "P1,P2 got Prof'd";
+            //lastStatusTime = SDL_GetTicks();
+        }
+    }
+    else{
+        if(f1)
+        {
+            statusText = "You got Prof'd";
+            //lastStatusTime = SDL_GetTicks();
+        }
     }
 }
 
@@ -248,7 +274,9 @@ void Game::updateStatusText()
     if(!gameOver && statusText!="")
     {
         if(SDL_GetTicks() - lastStatusTime > 5000)
+        {
             statusText = "";
+        }
     }
 }
 

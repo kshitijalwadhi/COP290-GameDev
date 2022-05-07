@@ -21,7 +21,7 @@ class GameObject{
 
         bool checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, int type, int capacity);
 
-        void checkAndHandleEnemyIntersection(int x_enemy, int y_enemy);
+        bool checkAndHandleEnemyIntersection(int x_enemy, int y_enemy);
 
         bool isAlive();
     private:

@@ -211,8 +211,9 @@ bool GameObject::checkAndHandleSpawnableIntersection(int x_spawn, int y_spawn, i
     return intersect;
 }
 
-void GameObject::checkAndHandleEnemyIntersection(int x_enemy, int y_enemy)
+bool GameObject::checkAndHandleEnemyIntersection(int x_enemy, int y_enemy)
 {
+    bool interact = false;
     int x_enemy_centre = x_enemy + 8;
     int y_enemy_centre = y_enemy + 8;
     if(xpos<=x_enemy_centre && x_enemy_centre<=xpos+16 && ypos<=y_enemy_centre && y_enemy_centre<=ypos+16)
@@ -233,8 +234,10 @@ void GameObject::checkAndHandleEnemyIntersection(int x_enemy, int y_enemy)
                 nerdiness = 100;
             }
             lastEnemyInteraction = SDL_GetTicks();
+            interact = true;
         }
     }
+    return interact;
 }
 
 int returnSpeed(int loc)
