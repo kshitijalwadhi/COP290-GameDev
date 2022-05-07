@@ -28,6 +28,9 @@ SDL_Rect statusRect = {39*16, 36*16, 25*16, 3*16};
 SDL_Texture* statusTexture = nullptr;
 std::string statusText = "";
 
+SDL_Rect dstRect_ToMenu = {globals::SCREEN_WIDTH - 50, 0, 50, 50};
+SDL_Texture* menuTex = nullptr;
+
 Game::Game()
 {
     isRunning = false;
@@ -111,11 +114,22 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     }
 }
 
+bool checkInsideRect(int x, int y, SDL_Rect rect)
+{
+    if(x > rect.x && x < rect.x + rect.w && y > rect.y && y < rect.y + rect.h)
+    {
+        return true;
+    }
+    return false;
+}
+
 void Game::handleEvents()
 {
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     SDL_Event event;
     SDL_PollEvent(&event);
+    int x, y;
+    SDL_GetMouseState(&x, &y);
 
     switch(event.type)
     {
@@ -129,7 +143,11 @@ void Game::handleEvents()
                 player2->updatePos(event, state, map->map_mat,2);
             }
             break;
-        
+        case SDL_MOUSEBUTTONDOWN:
+            if(checkInsideRect(x, y, dstRect_ToMenu))
+            {
+                isMenuScreen = true;
+            }
         default:
             break;
     }
@@ -212,7 +230,7 @@ void Game::updateStatusText()
         else if(!player1_alive && !player2_alive)
             statusText = "Draw!";
         
-        gameOver = player1_alive & player2_alive;
+        gameOver = !(player1_alive && player2_alive);
     }
     else{
         if(!player1->isAlive())
@@ -225,7 +243,7 @@ void Game::updateStatusText()
 void Game::update()
 {
     // handle game logic here
-    if(!gameOver)
+    if(!gameOver & !isMenuScreen)
     {
         player1->update(map->map_mat);
         if(isMultiplayer)
@@ -269,6 +287,9 @@ void Game::render()
         TextureManager::drawText(statusTexture, statusRect);
         SDL_DestroyTexture(statusTexture);
     }
+    menuTex = TextureManager::loadTextureFromText("Menu","../assets/fonts/Raleway-Medium.ttf", 6, {255, 255, 255});
+    TextureManager::drawText(menuTex, dstRect_ToMenu);
+    SDL_DestroyTexture(menuTex);
     SDL_RenderPresent(renderer);
 }
 
@@ -291,10 +312,38 @@ void Game::handleMenuEvents()
                 case 1:
                     isMenuScreen = false;
                     isMultiplayer = false;
+                    map = new Map();
+
+                    player1 = new GameObject("../assets/sprites/characters.png", 128, 48, 1, 1, startTime);
+                    player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime);
+
+                    startTime = 0;
+                    numEnemies = 0;
+                    numSpawnables = 0;
+                    gameOver = false;
+
+                    statusText = "";
+                    lastSpawn=0;
+                    enemies.clear();
+                    spawnables.clear();
                     break;
                 case 2:
                     isMenuScreen = false;
                     isMultiplayer = true;
+                    map = new Map();
+
+                    player1 = new GameObject("../assets/sprites/characters.png", 128, 48, 1, 1, startTime);
+                    player2 = new GameObject("../assets/sprites/characters.png", 128, 19*16, 2, 3, startTime);
+
+                    startTime = 0;
+                    numEnemies = 0;
+                    numSpawnables = 0;
+                    gameOver = false;
+
+                    statusText = "";
+                    lastSpawn=0;
+                    enemies.clear();
+                    spawnables.clear();
                     break;
                 case 3:
                     isRunning = false;
