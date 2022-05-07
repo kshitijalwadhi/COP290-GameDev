@@ -16,6 +16,10 @@ Map::Map(){
     dest.x = dest.y = 0;
 }
 
+Map::~Map(){
+    SDL_DestroyTexture(textureMap);
+}
+
 void Map::loadMap(const char* fname){
     std::vector<std::vector<int>> mat;
     std::ifstream file(fname);

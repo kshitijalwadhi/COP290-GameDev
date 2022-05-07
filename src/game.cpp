@@ -107,7 +107,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         startTime = 0;
         numEnemies = 0;
         numSpawnables = 0;
-        gameOver = false;
+        gameOver = true;
     }
     else{
         isRunning = false;
@@ -310,6 +310,9 @@ void Game::handleMenuEvents()
             switch (button_idx)
             {
                 case 1:
+                    player1->~GameObject();
+                    player2->~GameObject();
+                    map->~Map();
                     isMenuScreen = false;
                     isMultiplayer = false;
                     map = new Map();
@@ -328,6 +331,9 @@ void Game::handleMenuEvents()
                     spawnables.clear();
                     break;
                 case 2:
+                    player1->~GameObject();
+                    player2->~GameObject();
+                    map->~Map();
                     isMenuScreen = false;
                     isMultiplayer = true;
                     map = new Map();
@@ -362,6 +368,10 @@ void Game::handleMenuEvents()
                         }
                     }
                     break;
+                case 5:
+                {
+                    isMenuScreen = false;
+                }
                 default:
                     break;
             }
@@ -375,7 +385,8 @@ void Game::handleMenuEvents()
 
 void Game::updateMenu()
 {
-    menu->update();
+    menu->update(gameOver);
+    menu->isPaused = gameOver;
 }
 
 void Game::renderMenu()

@@ -22,10 +22,17 @@ Menu::Menu()
     dstRect_Exit.w = 50;
     dstRect_Exit.h = 50;
 
+    dstRect_Resume.x = globals::SCREEN_WIDTH/2 -25;
+    dstRect_Resume.y = globals::SCREEN_HEIGHT/2 + 50;
+    dstRect_Resume.w = 50;
+    dstRect_Resume.h = 50;
+
     dstRect_Music.x = globals::SCREEN_WIDTH - 100;
     dstRect_Music.y = 100;
     dstRect_Music.w = 50;
     dstRect_Music.h = 50;
+
+    isPaused = false;
     
 }
 
@@ -50,11 +57,18 @@ void Menu::render()
     SDL_Texture* button4_texture = TextureManager::loadTextureFromText("Music",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
     TextureManager::drawText(button4_texture,dstRect_Music);
     SDL_DestroyTexture(button4_texture);
+    
+    if(!isPaused)
+    {
+        SDL_Texture* button5_texture = TextureManager::loadTextureFromText("Resume",fontName_MenuScreenButtons,fontSize_MenuScreenButtons, buttonTextColor);
+        TextureManager::drawText(button5_texture,dstRect_Resume);
+        SDL_DestroyTexture(button5_texture);
+    }
 }
 
-void Menu::update()
+void Menu::update(bool isPaused)
 {
-
+    isPaused = isPaused;
 }
 
 bool checkInside(int x, int y, SDL_Rect rect)
@@ -86,6 +100,10 @@ int Menu::handleClick(SDL_Event event)
     else if(checkInside(x, y, dstRect_Music))
     {
         return 4;
+    }
+    else if(checkInside(x, y, dstRect_Resume) && !isPaused)
+    {
+        return 5;
     }
     return 0;
 }
