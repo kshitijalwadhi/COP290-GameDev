@@ -471,6 +471,107 @@ void GameObject::updatePos(SDL_Event event, const Uint8 *state, int map[40][80],
         ypos = globals::SCREEN_HEIGHT - destRect.h;
 }
 
+void GameObject::updatePosClient(int drn, int map[40][80], int player_idx)
+{
+    int tempy = (ypos+8)/16;
+    int tempx = (xpos+0.5)/16;
+    int loc = map[tempy][tempx];
+    int hop = returnSpeed(loc);
+
+    if(drn == 0)
+    {
+        if (!checkCollision(xpos,ypos-hop, map))
+        {
+            ypos -= hop;
+            facing = 0;
+        }
+        else{
+            int temp_hop = hop-1;
+            while(temp_hop>0)
+            {
+                if (!checkCollision(xpos,ypos-temp_hop, map))
+                {
+                    ypos -= temp_hop;
+                    facing = 0;
+                }
+                temp_hop--;
+            }
+        }
+        frames++;
+    }
+    else if(drn == 1)
+    {
+        if (!checkCollision(xpos+hop,ypos, map))
+            {
+                xpos += hop;
+                facing = 1;
+            }
+            else{
+                int temp_hop = hop-1;
+                while(temp_hop>0)
+                {
+                    if (!checkCollision(xpos+temp_hop,ypos, map))
+                    {
+                        xpos += temp_hop;
+                        facing = 1;
+                    }
+                    temp_hop--;
+                }
+            }
+            frames++;
+    }
+    else if(drn==2)
+    {
+        if (!checkCollision(xpos,ypos+hop, map))
+        {
+            ypos += hop;
+            facing = 2;
+        }
+        else{
+            int temp_hop = hop-1;
+            while(temp_hop>0)
+            {
+                if (!checkCollision(xpos,ypos+temp_hop, map))
+                {
+                    ypos += temp_hop;
+                    facing = 2;
+                }
+                temp_hop--;
+            }
+        }
+        frames++;
+    }
+    else if(drn==3)
+    {
+        if (!checkCollision(xpos-hop,ypos, map))
+        {
+            xpos -= hop;
+            facing = 3;
+        }
+        else{
+            int temp_hop = hop-1;
+            while(temp_hop>0)
+            {
+                if (!checkCollision(xpos-temp_hop,ypos, map))
+                {
+                    xpos -= temp_hop;
+                    facing = 3;
+                }
+                temp_hop--;
+            }
+        }
+        frames++;
+    }
+    if(xpos <0)
+        xpos = 0;
+    if(ypos <0)
+        ypos = 0;
+    if(xpos > globals::SCREEN_WIDTH - destRect.w)
+        xpos = globals::SCREEN_WIDTH - destRect.w;
+    if(ypos > globals::SCREEN_HEIGHT - destRect.h)
+        ypos = globals::SCREEN_HEIGHT - destRect.h;
+}
+
 void GameObject::render()
 {
     SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);

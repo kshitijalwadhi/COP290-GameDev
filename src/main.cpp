@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
     srand(time(0));
     game = new Game();
 
-    game->init("Flag Hunt", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, true);
+    game->init("Flag Hunt", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, false);
 
     while(game->running())
     {

@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_net.h>
 #include <stdio.h>
 #include <iostream>
 
@@ -37,6 +38,9 @@ class Game{
 
         Uint32 startTime;
 
+        void sendMsgToServer(const Uint8 *state);
+        int receiveEventFromClient(SDL_Event *E);
+
     private:
         bool isRunning;
         bool isMenuScreen;
@@ -47,6 +51,13 @@ class Game{
 
         int numEnemies, numSpawnables;
         SDL_Window* window;
+
+        SDLNet_SocketSet set;
+
+        bool onlinePossible;
+        TCPsocket server;
+        IPaddress ip;
+        int id;
 };
 
 #endif
