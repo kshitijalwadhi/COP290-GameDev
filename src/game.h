@@ -48,6 +48,8 @@ class Game{
         bool isMenuScreen;
         bool bgMusicPlaying;
 
+        bool deathSoundPlayed;
+
         bool isMultiplayer;
         bool gameOver;
 

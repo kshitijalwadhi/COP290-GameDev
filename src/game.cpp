@@ -22,6 +22,10 @@ SDL_Renderer* Game::renderer = nullptr;
 
 Mix_Music *gMenuMusic = NULL;
 
+Mix_Chunk *gPotion = NULL;
+Mix_Chunk *gDeath = NULL;
+Mix_Chunk *gEnemy = NULL;
+
 Uint32 lastSpawn=0;
 Uint32 lastStatusTime=0;
 
@@ -92,11 +96,29 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
             return;
         }
 
-        gMenuMusic = Mix_LoadMUS("../assets/audio/menu.mp3");
+        gMenuMusic = Mix_LoadMUS("../assets/audio/background.mp3");
+        gDeath = Mix_LoadWAV("../assets/audio/pacDeath.wav");
+        gPotion = Mix_LoadWAV("../assets/audio/eat50.wav");
+        gEnemy = Mix_LoadWAV("../assets/audio/ghostRetreat.wav");
 
         if(gMenuMusic == NULL)
         {
             printf("Failed to load menu music! SDL_mixer Error: %s\n", Mix_GetError());
+            return;
+        }
+        if(gDeath == NULL)
+        {
+            printf("Failed to load death sound! SDL_mixer Error: %s\n", Mix_GetError());
+            return;
+        }
+        if(gPotion == NULL)
+        {
+            printf("Failed to load potion sound! SDL_mixer Error: %s\n", Mix_GetError());
+            return;
+        }
+        if(gEnemy == NULL)
+        {
+            printf("Failed to load enemy sound! SDL_mixer Error: %s\n", Mix_GetError());
             return;
         }
 
@@ -157,6 +179,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
         bgMusicPlaying = true;
         Mix_PlayMusic(gMenuMusic, 1);
+
+        deathSoundPlayed = false;
 
         isRunning = true;
         isMenuScreen = true;
@@ -304,7 +328,7 @@ void Game::handleEvents()
 
 void Game::spawnableSpawnHelper()
 {
-    int rnd = rand()%globals::enemySpawnRate;
+    int rnd = rand()%globals::spawnRate;
     if(rnd==0)
     {
         std::pair<int,int> valSpawn = map->validPos();
@@ -357,6 +381,7 @@ void Game::checkSpawnableIntersection()
             spawnables.erase(spawnables.begin()+i);
             i--;
             numSpawnables--;
+            Mix_PlayChannel(-1,gPotion,0);
         }
     }
 }
@@ -389,12 +414,15 @@ void Game::checkEnemyInteraction()
             statusText = "P1,P2 got Prof'd";
             //lastStatusTime = SDL_GetTicks();
         }
+        if(f1 || f2)
+            Mix_PlayChannel(-1, gEnemy, 0);
     }
     else{
         if(f1)
         {
             statusText = "You got Prof'd";
             //lastStatusTime = SDL_GetTicks();
+            Mix_PlayChannel(-1, gEnemy, 0);
         }
     }
 }
@@ -429,6 +457,11 @@ void Game::updateStatusText()
         {
             statusText = "";
         }
+    }
+    if(gameOver && !deathSoundPlayed)
+    {
+        Mix_PlayChannel(-1,gDeath,0);
+        deathSoundPlayed = true;
     }
 }
 
@@ -659,7 +692,13 @@ void Game::renderMenu()
 void Game::clean()
 {
     Mix_FreeMusic( gMenuMusic );
+    Mix_FreeChunk( gDeath );
+    Mix_FreeChunk( gPotion );
+    Mix_FreeChunk( gEnemy );
     gMenuMusic = NULL;
+    gDeath = NULL;
+    gPotion = NULL;
+    gEnemy = NULL;
     Mix_Quit();
     IMG_Quit();
     TTF_Quit();
