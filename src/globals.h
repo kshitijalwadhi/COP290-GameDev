@@ -42,7 +42,7 @@ namespace globals {
 	const float socialQuotientGain = 0.006;
 	const float fitnessGain = 0.002;
 	
-	const int enemySpawnRate = 3000;
+	const int enemySpawnRate = 300;
 	const int maxEnemies = 5;
 	
 	const int speedDampingFactor = 4;

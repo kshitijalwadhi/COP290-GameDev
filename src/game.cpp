@@ -396,6 +396,8 @@ void Game::checkEnemyInteraction()
         f1 = player1->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
         if(isMultiplayer)
             f2 = player2->checkAndHandleEnemyIntersection(xpos_enemy, ypos_enemy);
+        if(f1||f2)
+            Mix_PlayChannel(-1, gEnemy, 0);
     }
     if(isMultiplayer)
     {
