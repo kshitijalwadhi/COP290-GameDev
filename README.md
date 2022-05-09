@@ -1,5 +1,7 @@
 # IIT-D Mazetries
 
+Game presentation uploaded [here](./Game%20Presentation.pdf).
+
 ## SYSTEM REQUIREMENTS
 
 Operating System used: Ubuntu (22.04)
